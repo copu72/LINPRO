@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from linpro.exceptions import SettingsError
+from linpro.core.exceptions import SettingsError
 
 
 _DEFAULT_SETTINGS: Dict[str, Any] = {

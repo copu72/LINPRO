@@ -18,7 +18,7 @@ Repository = "https://github.com/copu72/LINPRO"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["linpro*", "linpro.core*", "linpro.app*", "linpro.config*", "linpro.events*", "linpro.plugins*", "linpro.logging*", "linpro.exceptions*", "linpro.project*", "linpro.settings*", "linpro.resources*", "linpro.utils*"]
+include = ["linpro*", "linpro.core*", "linpro.core.app*", "linpro.core.config*", "linpro.core.events*", "linpro.core.exceptions*", "linpro.core.logging*", "linpro.core.plugins*", "linpro.core.project*", "linpro.core.settings*", "linpro.core.version*", "linpro.models*", "linpro.api*", "linpro.io*", "linpro.services*", "linpro.engine*"]
 
 [tool.ruff]
 line-length = 100

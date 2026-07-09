@@ -1,18 +1,31 @@
-"""LINPRO Core — Fachada pública del núcleo.
+"""LINPRO Core — Núcleo unificado.
 
-Este módulo expone las clases y funciones principales del Core.
-Todo lo que un módulo externo necesita está aquí.
+Todos los módulos del Core están bajo este paquete:
+app, config, events, exceptions, logging, plugins, project,
+settings, version, utils.
+
+No debe haber ningún otro módulo de Core fuera de aquí.
 """
 
-from linpro.app import LINPROApp
-from linpro.config import Configuration
-from linpro.events import EventBus, Event
-from linpro.exceptions import LINPROError, ProjectError, ConfigError, PluginError
-from linpro.logging import LINPROLogger, LogLevel
-from linpro.plugins import PluginManager, BasePlugin, PluginInfo
-from linpro.project import Project, Workspace, ProjectMetadata, ProjectState
-from linpro.settings import UserSettings
-from linpro.version import get_version, get_version_info, compare_versions
+from linpro.core.app import LINPROApp
+from linpro.core.config import Configuration
+from linpro.core.events import EventBus, Event
+from linpro.core.exceptions import (
+    LINPROError,
+    ProjectError,
+    ConfigError,
+    PluginError,
+    EventError,
+    LogError,
+    SettingsError,
+    VersionError,
+    WorkspaceError,
+)
+from linpro.core.logging import LINPROLogger, LogLevel
+from linpro.core.plugins import PluginManager, BasePlugin, PluginInfo
+from linpro.core.project import Project, Workspace, ProjectMetadata, ProjectState
+from linpro.core.settings import UserSettings
+from linpro.core.version import get_version, get_version_info, compare_versions, VersionInfo
 
 __all__ = [
     "LINPROApp",
@@ -23,6 +36,11 @@ __all__ = [
     "ProjectError",
     "ConfigError",
     "PluginError",
+    "EventError",
+    "LogError",
+    "SettingsError",
+    "VersionError",
+    "WorkspaceError",
     "LINPROLogger",
     "LogLevel",
     "PluginManager",
@@ -36,4 +54,5 @@ __all__ = [
     "get_version",
     "get_version_info",
     "compare_versions",
+    "VersionInfo",
 ]

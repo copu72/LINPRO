@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from linpro.exceptions import ProjectError, WorkspaceError
+from linpro.core.exceptions import ProjectError, WorkspaceError
 
 
 @dataclass

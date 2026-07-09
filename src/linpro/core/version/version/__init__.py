@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from linpro.exceptions import VersionError
+from linpro.core.exceptions import VersionError
 
 
 VERSION_MAJOR = 0

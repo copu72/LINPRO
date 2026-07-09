@@ -1,0 +1,513 @@
+Listado de rutas de carpetas
+El número de serie del volumen es 00000013 A0C8:AEF8
+C:.
+|   .gitattributes
+|   .gitignore
+|   CHANGELOG.md
+|   CODE_OF_CONDUCT.md
+|   CONTRIBUTING.md
+|   LICENSE
+|   LINPRO_CONTEXT.md
+|   PROJECT_TREE.txt
+|   pyproject.toml
+|   README.md
+|   requirements.txt
+|   ROADMAP.md
+|   
++---.github
+|   |   CODEOWNERS
+|   |   FUNDING.yml
+|   |   pull_request_template.md
+|   |   
+|   +---DISCUSSION_TEMPLATE
+|   |       .gitkeep
+|   |       
+|   +---ISSUE_TEMPLATE
+|   |       .gitkeep
+|   |       
+|   \---workflows
+|           build.yml
+|           lint.yml
+|           tests.yml
+|           
++---.pytest_cache
+|   |   .gitignore
+|   |   CACHEDIR.TAG
+|   |   README.md
+|   |   
+|   \---v
+|       \---cache
+|               lastfailed
+|               nodeids
+|               
++---.vscode
+|       .gitkeep
+|       
++---assets
+|   +---fonts
+|   |       .gitkeep
+|   |       
+|   +---icons
+|   |       .gitkeep
+|   |       
+|   +---images
+|   |       .gitkeep
+|   |       
+|   +---logos
+|   |       .gitkeep
+|   |       
+|   +---splash
+|   |       .gitkeep
+|   |       
+|   +---styles
+|   |       .gitkeep
+|   |       
+|   \---ui
+|           .gitkeep
+|           
++---config
+|   +---default
+|   |       .gitkeep
+|   |       
+|   +---templates
+|   |       .gitkeep
+|   |       
+|   \---user
+|           .gitkeep
+|           
++---data
+|   +---cache
+|   |       .gitkeep
+|   |       
+|   +---downloads
+|   |       .gitkeep
+|   |       
+|   +---official
+|   |   +---caminos
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---carreteras
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---catastro
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---hidrografia
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---infraestructuras
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---mdt
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---municipios
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---ortofotos
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---otros
+|   |   |       .gitkeep
+|   |   |       
+|   |   \---sigpac
+|   |           .gitkeep
+|   |           
+|   +---output
+|   |   +---csv
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---dwg
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---dxf
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---excel
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---json
+|   |   |       .gitkeep
+|   |   |       
+|   |   \---pdf
+|   |           .gitkeep
+|   |           
+|   +---samples
+|   |   +---dwg
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---dxf
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---excel
+|   |   |       .gitkeep
+|   |   |       
+|   |   +---gpkg
+|   |   |       .gitkeep
+|   |   |       
+|   |   \---shp
+|   |           .gitkeep
+|   |           
+|   \---temporary
+|           .gitkeep
+|           
++---decisions
+|       ADR-001_ARQUITECTURA_GENERAL.md
+|       ADR-002_PYTHON.md
+|       ADR-003_PYSIDE6.md
+|       ADR-004_GEOPANDAS.md
+|       ADR-005_AUTOCAD.md
+|       ADR-006_CATASTRO.md
+|       ADR-007_CARRETERAS.md
+|       ADR-008_RIOS.md
+|       ADR-009_EXCEL.md
+|       ADR-010_INSTALADOR.md
+|       
++---design
+|       database.drawio
+|       geometry_engine.drawio
+|       gui.drawio
+|       modules.drawio
+|       workflow.drawio
+|       
++---docs
+|   +---00_Project
+|   |       000_Project_Charter.md
+|   |       001_Project_Objectives.md
+|   |       002_Project_Roadmap.md
+|   |       003_Project_Glossary.md
+|   |       004_Project_Context.md
+|   |       
+|   +---01_Functional
+|   |       FR-0001_Definir_Eje.md
+|   |       FR-0002_Calcular_PK.md
+|   |       FR-0003_Generar_Buffer.md
+|   |       FR-0004_Calcular_Intersecciones.md
+|   |       FR-0005_Analizar_Municipios.md
+|   |       FR-0006_Analizar_Catastro.md
+|   |       FR-0007_Analizar_Carreteras.md
+|   |       FR-0008_Analizar_Hidrografia.md
+|   |       FR-0009_Exportar_Excel.md
+|   |       FR-0010_Exportar_DXF.md
+|   |       UC-001_Analizar_Eje.md
+|   |       UC-002_Obtener_Municipios.md
+|   |       UC-003_Obtener_Parcelas.md
+|   |       UC-004_Cruce_Carretera.md
+|   |       
+|   +---02_Technical
+|   |       Coding_Standards.md
+|   |       Dependencies.md
+|   |       Naming_Convention.md
+|   |       Python_Guidelines.md
+|   |       Repository_Rules.md
+|   |       
+|   +---03_Architecture
+|   |       Core_Architecture.md
+|   |       Database_Architecture.md
+|   |       Geometry_Architecture.md
+|   |       GUI_Architecture.md
+|   |       Overall_Architecture.md
+|   |       Plugin_Architecture.md
+|   |       
+|   +---04_Modules
+|   |   +---Cadastre
+|   |   |       README.md
+|   |   |       
+|   |   +---Core
+|   |   |   |   API.md
+|   |   |   |   Architecture.md
+|   |   |   |   Classes.md
+|   |   |   |   README.md
+|   |   |   |   Tests.md
+|   |   |   |   TODO.md
+|   |   |   |   
+|   |   |   \---Requirements
+|   |   +---DWG
+|   |   |       README.md
+|   |   |       
+|   |   +---Excel
+|   |   |       README.md
+|   |   |       
+|   |   +---Geometry
+|   |   |   +---Alignment
+|   |   |   |       README.md
+|   |   |   |       
+|   |   |   +---Buffer
+|   |   |   |       README.md
+|   |   |   |       
+|   |   |   \---PK
+|   |   |           README.md
+|   |   |           
+|   |   +---GUI
+|   |   |       README.md
+|   |   |       
+|   |   +---Hydrology
+|   |   |       README.md
+|   |   |       
+|   |   +---Infrastructure
+|   |   |       README.md
+|   |   |       
+|   |   +---Municipalities
+|   |   |       README.md
+|   |   |       
+|   |   +---Reports
+|   |   |       README.md
+|   |   |       
+|   |   \---Roads
+|   |           README.md
+|   |           
+|   +---05_API
+|   |       API_Reference.md
+|   |       
+|   +---06_Testing
+|   |       Testing_Strategy.md
+|   |       
+|   +---07_Development
+|   |       Development_Workflow.md
+|   |       Environment_Setup.md
+|   |       
+|   \---08_Releases
+|           Release_Policy.md
+|           
++---examples
+|   +---gasoducto
+|   |       .gitkeep
+|   |       
+|   +---linea_132kV
+|   |       .gitkeep
+|   |       
+|   +---linea_220kV
+|   |       .gitkeep
+|   |       
+|   +---linea_400kV
+|   |       .gitkeep
+|   |       
+|   +---linea_AT
+|   |       .gitkeep
+|   |       
+|   +---linea_MT
+|   |       .gitkeep
+|   |       
+|   \---subestacion
+|           .gitkeep
+|           
++---installers
+|   +---portable
+|   |       .gitkeep
+|   |       
+|   \---windows
+|           .gitkeep
+|           
++---logs
+|       .gitkeep
+|       
++---plugins
+|   |   __init__.py
+|   |   
+|   +---caminos
+|   |       .gitkeep
+|   |       
+|   +---carreteras
+|   |       .gitkeep
+|   |       
+|   +---catastro
+|   |       .gitkeep
+|   |       
+|   +---ferrocarril
+|   |       .gitkeep
+|   |       
+|   +---infraestructuras
+|   |       .gitkeep
+|   |       
+|   +---municipios
+|   |       .gitkeep
+|   |       
+|   +---red_natura
+|   |       .gitkeep
+|   |       
+|   +---rios
+|   |       .gitkeep
+|   |       
+|   \---sigpac
+|           .gitkeep
+|           
++---scripts
+|   +---build
+|   |       .gitkeep
+|   |       
+|   +---download
+|   |       .gitkeep
+|   |       
+|   +---maintenance
+|   |       .gitkeep
+|   |       
+|   \---testing
+|           .gitkeep
+|           
++---src
+|   +---linpro
+|   |   |   __init__.py
+|   |   |   
+|   |   +---app
+|   |   |   |   .gitkeep
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---config
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---core
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   +---constants
+|   |   |   |       .gitkeep
+|   |   |   |       __init__.py
+|   |   |   |       
+|   |   |   +---exceptions
+|   |   |   |       .gitkeep
+|   |   |   |       __init__.py
+|   |   |   |       
+|   |   |   +---logging
+|   |   |   |       .gitkeep
+|   |   |   |       __init__.py
+|   |   |   |       
+|   |   |   +---project
+|   |   |   |       .gitkeep
+|   |   |   |       __init__.py
+|   |   |   |       
+|   |   |   +---settings
+|   |   |   |       .gitkeep
+|   |   |   |       __init__.py
+|   |   |   |       
+|   |   |   +---updater
+|   |   |   |       .gitkeep
+|   |   |   |       __init__.py
+|   |   |   |       
+|   |   |   +---version
+|   |   |   |       .gitkeep
+|   |   |   |       __init__.py
+|   |   |   |       
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---events
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---exceptions
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---logging
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---plugins
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---project
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---resources
+|   |   +---settings
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---utils
+|   |   |       .gitkeep
+|   |   |       __init__.py
+|   |   |       
+|   |   +---version
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   \---__pycache__
+|   |           __init__.cpython-313.pyc
+|   |           
+|   \---linpro.egg-info
+|           dependency_links.txt
+|           PKG-INFO
+|           SOURCES.txt
+|           top_level.txt
+|           
++---tests
+|   +---app
+|   |   |   test_app.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_app.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---config
+|   |   |   test_config.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_config.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---core
+|   +---events
+|   |   |   test_events.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_events.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---exceptions
+|   |   |   test_exceptions.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_exceptions.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---integration
+|   |       .gitkeep
+|   |       
+|   +---logging
+|   |   |   test_logging.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_logging.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---plugins
+|   |   |   test_plugins.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_plugins.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---project
+|   |   |   test_project.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_project.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---settings
+|   |   |   test_settings.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_settings.cpython-313-pytest-9.1.0.pyc
+|   |           
+|   +---unit
+|   |       .gitkeep
+|   |       
+|   \---utils
+\---tools
+        .gitkeep
+        

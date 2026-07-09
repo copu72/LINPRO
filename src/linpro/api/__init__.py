@@ -1,18 +1,13 @@
-"""LINPRO — Ingeniería Lineal Profesional.
+"""API pública de LINPRO.
 
-Plataforma Python modular para el análisis, diseño y gestión
-de infraestructuras lineales.
+Toda la aplicación habla con la API. Ningún módulo externo
+se comunica directamente con los módulos internos.
 
-Arquitectura:
-    LINPRO Core (dependencia base)
-        api/       — Fachada pública
-        models/    — Clases de dominio
-        io/        — Entrada/salida
-        services/  — Servicios de negocio
-        engine/    — Algoritmos matemáticos
+La API expone los casos de uso del programa y orquesta
+los servicios, modelos, y el Core.
 """
 
-from linpro.api import (
+from linpro.core import (
     LINPROApp,
     Configuration,
     EventBus,
@@ -30,6 +25,8 @@ from linpro.api import (
     ProjectError,
     ConfigError,
     PluginError,
+)
+from linpro.models import (
     Project,
     Alignment,
     Municipality,
