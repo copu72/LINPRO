@@ -1,29 +1,47 @@
 ﻿# LINPRO — Ingeniería Lineal Profesional
 
-**LINPRO** es una librería Python para el análisis, diseño y gestión de infraestructuras lineales: líneas eléctricas, carreteras, tuberías, canales y cualquier obra cuya geometría se defina mediante un eje.
+**LINPRO** es una plataforma Python para el análisis, diseño y gestión de infraestructuras lineales: líneas eléctricas (MT, AT, 132kV, 220kV, 400kV), carreteras, gasoductos, tuberías y canales.
 
 ## Filosofía
 
-- **Una carpeta = una responsabilidad.** Ningún módulo conoce el funcionamiento interno de otro.
-- **Objeto central Project.** Todos los módulos leen y escriben sobre él. Ningún módulo habla directamente con otro.
-- **Documentación primero.** Cada decisión técnica se registra en docs/adr/. Cada especificación vive en docs/specifications/.
+- **Plataforma, no programa.** Sistema de plugins modular donde cada análisis es independiente.
+- **Objeto central `Project`.** Todos los módulos leen y escriben sobre él. Ninguno habla directamente con otro.
+- **Identificador único.** Cada requisito tiene un ID (REQ-XXXX) para trazabilidad total.
+- **Documentación primero.** Toda decisión queda registrada en `/decisions/`. Los diagramas viven en `/design/`.
+
+## Estructura
+
+```
+LINPRO/
+├── decisions/       # Architecture Decision Records (ADR-001...)
+├── design/          # Diagramas .drawio (arquitectura, flujos, módulos)
+├── docs/            # Especificaciones REQ-XXXX, manuales
+├── src/linpro/      # Librería Python (core, geometry, gis, cad, gui...)
+├── plugins/         # Módulos independientes (catastro, ríos, carreteras...)
+├── tests/           # Unit, integration, regression, performance
+├── examples/        # Proyectos reales de prueba
+└── data/            # Oficial (vacío), samples, cache, output
+```
 
 ## Uso
 
-`python
+```python
 from linpro import Project
 from linpro.geometry import Alignment
-from linpro.roads import RoadAnalyzer
 
-proj = Project("Mi Proyecto")
-alignment = Alignment.from_points([(0,0), (100, 50), (200, 200)])
-proj.set_alignment(alignment)
-`
+proj = Project("Línea 132kV")
+alignment = Alignment()
+alignment.add_straight((0,0), (500,0))
+alignment.add_curve((500,0), (600,50), radius=300)
+proj.alignment = alignment
+proj.run_analysis()
+proj.export_excel("informe.xlsx")
+```
 
 ## Licencia
 
-Ver archivo LICENSE.
+MIT License.
 
 ## Estado
 
-En fase de definición y construcción del esqueleto.
+**Sprint 0 — Fundación.** Esqueleto del proyecto, documentación base, ADRs, diagramas.
