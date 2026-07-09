@@ -1,0 +1,30 @@
+﻿# Core
+numpy>=1.24.0
+shapely>=2.0.0
+geopandas>=0.14.0
+pyproj>=3.6.0
+pandas>=2.0.0
+
+# GUI
+PySide6>=6.5.0
+
+# CAD
+ezdxf>=1.2.0
+
+# GIS
+rasterio>=1.3.0
+fiona>=1.9.0
+
+# Excel
+openpyxl>=3.1.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-benchmark>=4.1.0
+
+# Development
+black>=23.0.0
+ruff>=0.1.0
+mypy>=1.6.0
+pre-commit>=3.5.0

@@ -1,0 +1,20 @@
+﻿# Auto detect text files
+* text=auto
+
+# Python files
+*.py text diff=python
+
+# Markdown
+*.md text
+
+# Binary files
+*.dwg binary
+*.dxf binary
+*.shp binary
+*.gpkg binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.xlsx binary
+*.xls binary

@@ -1,0 +1,51 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# LINPRO
+logs/
+data/cache/
+data/temporary/
+data/downloads/
+data/official/catastro/*
+data/official/municipios/*
+data/official/carreteras/*
+data/official/caminos/*
+data/official/hidrografia/*
+data/official/infraestructuras/*
+data/official/sigpac/*
+data/official/ortofotos/*
+data/official/mdt/*
+data/official/otros/*
+data/output/*
+!data/official/**/.gitkeep
+!data/samples/**/*.dwg
+!data/samples/**/*.dxf
+!data/samples/**/*.shp
+!data/samples/**/*.gpkg
+!data/samples/**/*.xlsx
+
+# Config local
+config/user/
+*.local.ini
