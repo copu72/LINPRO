@@ -1,62 +1,55 @@
 # LINPRO — Contexto del proyecto
 
-**Versión:** 0.0.1
-**Sprint:** 0 (Fundación)
-**Fase:** 0 — Arquitectura
+**Versión:** 0.1.0
+**Sprint:** 1 (LINPRO Core)
+**Fase:** 1 — Core
+**Release:** v0.1.0
 **Fecha:** 2026-07-09
 
 ---
 
 ## Módulos / Hitos
 
-| Estado | Módulo | Docs | Código |
-|--------|--------|------|--------|
-| ☑ | Arquitectura | ✅ 6 docs | ❌ |
-| ☑ | Estructura del repo | ✅ | ✅ |
-| ☑ | Project Charter | ✅ | ❌ |
-| ☑ | Requisitos funcionales | ✅ FR-0001 a FR-0010 | ❌ |
-| ☑ | Casos de uso | ✅ UC-001 a UC-004 | ❌ |
-| ☑ | Convenciones técnicas | ✅ 5 docs | ❌ |
-| ☑ | ADRs | ✅ 10 decisiones | ❌ |
-| ☑ | Diagramas de diseño | ✅ 5 .drawio | ❌ |
-| ☐ | Core (Project, config, logging) | Pendiente | ❌ |
-| ☐ | Geometry (Alignment, PK, Buffer) | ✅ README | ❌ |
-| ☐ | GIS (descargas, proyecciones) | Pendiente | ❌ |
-| ☐ | CAD (DXF/DWG) | ✅ README | ❌ |
-| ☐ | GUI (PySide6) | ✅ README | ❌ |
-| ☐ | Excel / Reports | ✅ README | ❌ |
+| Estado | Módulo | Docs | Código | Tests |
+|--------|--------|------|--------|-------|
+| ☑ | Fundación (Sprint 0) | ✅ | ✅ | - |
+| ☑ | **Core (Sprint 1)** | ✅ 6 docs | ✅ 11 módulos | ✅ 109 tests |
+| ☐ | Geometry Engine (Sprint 2) | ❌ | ❌ | ❌ |
+| ☐ | GIS Engine (Sprint 3) | ❌ | ❌ | ❌ |
+| ☐ | CAD Engine (Sprint 4) | ❌ | ❌ | ❌ |
+| ☐ | Analysis Engine (Sprint 5) | ❌ | ❌ | ❌ |
+| ☐ | Export Engine (Sprint 6) | ❌ | ❌ | ❌ |
+| ☐ | GUI (Sprint 7) | ❌ | ❌ | ❌ |
+| ☐ | Instalador (Sprint 8) | ❌ | ❌ | ❌ |
+| ☐ | Beta (Sprint 9) | ❌ | ❌ | ❌ |
+| ☐ | Release 1.0 (Sprint 10) | ❌ | ❌ | ❌ |
 
----
+## Core — Módulos implementados
 
-## Pendiente inmediato
+| Módulo | Clases principales | Propósito |
+|--------|-------------------|-----------|
+| `app` | LINPROApp | Ciclo de vida de la aplicación |
+| `config` | Configuration | Configuración global (YAML) |
+| `events` | EventBus, Event | Comunicación entre módulos |
+| `exceptions` | LINPROError + 7 subclases | Jerarquía de errores |
+| `logging` | LINPROLogger, LogLevel | Sistema de logging profesional |
+| `plugins` | PluginManager, BasePlugin, PluginInfo | Sistema de plugins |
+| `project` | Project, Workspace | Objeto central del proyecto |
+| `settings` | UserSettings | Preferencias de usuario |
+| `version` | VersionInfo | Versionado semver |
 
-- [ ] Iniciar Sprint 1: LINPRO Core
+## Uso básico
+
+```python
+from linpro import Project, LINPROApp
+
+app = LINPROApp.get_instance()
+app.start()
+
+project = Project("Mi Proyecto")
+app.workspace.open_project(project)
+```
 
 ## Próximo objetivo
 
-**Sprint 1 — Core:** Implementar objeto Project, configuración, logging, excepciones y sistema de versiones.
-
----
-
-## Documentación generada (40+ archivos)
-
-```
-docs/
-├── 00_Project/          5 documentos (Charter, Objectives, Roadmap, Glossary, Context)
-├── 01_Functional/       14 documentos (FR-0001 a FR-0010, UC-001 a UC-004)
-├── 02_Technical/        5 documentos (Coding Standards, Naming, Python Guidelines, Dependencies, Repository Rules)
-├── 03_Architecture/     6 documentos (Overall, Core, Plugin, Geometry, GUI, Database)
-├── 04_Modules/          11 READMEs (Alignment, PK, Buffer, Municipalities, Cadastre, Roads, Hydrology, Infrastructure, Excel, DWG, GUI, Reports)
-├── 05_API/              1 documento (API Reference)
-├── 06_Testing/          1 documento (Testing Strategy)
-├── 07_Development/      2 documentos (Workflow, Environment Setup)
-├── 08_Releases/         1 documento (Release Policy)
-```
-
-## Decisiones registradas
-
-`decisions/` — ADR-001 a ADR-010
-
-## Diagramas
-
-`design/` — geometry_engine.drawio, gui.drawio, database.drawio, workflow.drawio, modules.drawio
+**Sprint 2 — Geometry Engine:** Alignment, PK, Buffer, Intersections, Topology.

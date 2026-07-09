@@ -1,11 +1,11 @@
-﻿[build-system]
+[build-system]
 requires = ["setuptools>=68.0.0", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "linpro"
-version = "0.0.1"
-description = "Librería para el análisis de infraestructuras lineales"
+version = "0.1.0"
+description = "Plataforma Python para el análisis de infraestructuras lineales"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
@@ -18,7 +18,7 @@ Repository = "https://github.com/copu72/LINPRO"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["linpro*"]
+include = ["linpro*", "linpro.core*", "linpro.app*", "linpro.config*", "linpro.events*", "linpro.plugins*", "linpro.logging*", "linpro.exceptions*", "linpro.project*", "linpro.settings*", "linpro.resources*", "linpro.utils*"]
 
 [tool.ruff]
 line-length = 100
