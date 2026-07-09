@@ -1,47 +1,49 @@
 ﻿# LINPRO — Ingeniería Lineal Profesional
 
-**LINPRO** es una plataforma Python para el análisis, diseño y gestión de infraestructuras lineales: líneas eléctricas (MT, AT, 132kV, 220kV, 400kV), carreteras, gasoductos, tuberías y canales.
+**LINPRO** es una plataforma Python modular para el análisis, diseño y gestión de infraestructuras lineales: líneas eléctricas, carreteras, gasoductos, tuberías y canales.
 
-## Filosofía
-
-- **Plataforma, no programa.** Sistema de plugins modular donde cada análisis es independiente.
-- **Objeto central `Project`.** Todos los módulos leen y escriben sobre él. Ninguno habla directamente con otro.
-- **Identificador único.** Cada requisito tiene un ID (REQ-XXXX) para trazabilidad total.
-- **Documentación primero.** Toda decisión queda registrada en `/decisions/`. Los diagramas viven en `/design/`.
-
-## Estructura
+## Arquitectura
 
 ```
-LINPRO/
-├── decisions/       # Architecture Decision Records (ADR-001...)
-├── design/          # Diagramas .drawio (arquitectura, flujos, módulos)
-├── docs/            # Especificaciones REQ-XXXX, manuales
-├── src/linpro/      # Librería Python (core, geometry, gis, cad, gui...)
-├── plugins/         # Módulos independientes (catastro, ríos, carreteras...)
-├── tests/           # Unit, integration, regression, performance
-├── examples/        # Proyectos reales de prueba
-└── data/            # Oficial (vacío), samples, cache, output
+LINPRO Core (dependencia base)
+    ├── LINPRO GIS    (datos geográficos, descargas WFS, proyecciones)
+    ├── LINPRO CAD    (DXF/DWG, capas, estilos, entidades)
+    ├── LINPRO GUI    (PySide6, MVC)
+    ├── LINPRO Reports (PDF)
+    └── LINPRO Excel  (informes .xlsx)
 ```
 
-## Uso
+Cada sublibrería depende exclusivamente de LINPRO Core.
 
-```python
-from linpro import Project
-from linpro.geometry import Alignment
+## Estado del proyecto
 
-proj = Project("Línea 132kV")
-alignment = Alignment()
-alignment.add_straight((0,0), (500,0))
-alignment.add_curve((500,0), (600,50), radius=300)
-proj.alignment = alignment
-proj.run_analysis()
-proj.export_excel("informe.xlsx")
-```
+**Fase:** 0 — Arquitectura (Sprint 0)
+**Versión:** 0.0.1
+**Documentación:** 40+ documentos profesionales completados.
+
+| Documento | Estado |
+|-----------|--------|
+| Project Charter | ✅ |
+| Objetivos y Roadmap | ✅ |
+| Glosario | ✅ |
+| Requisitos funcionales (FR-0001 a FR-0010) | ✅ |
+| Casos de uso (UC-001 a UC-004) | ✅ |
+| Convenciones de código | ✅ |
+| Arquitectura (6 documentos) | ✅ |
+| Módulos (11 READMEs) | ✅ |
+| API Reference | ✅ |
+| Testing Strategy | ✅ |
+| Development Workflow | ✅ |
+| ADRs (10 decisiones registradas) | ✅ |
+| Diagramas de diseño (5 .drawio) | ✅ |
+
+## Principios rectores
+
+1. **Nada se programa sin estar especificado.**
+2. **Ningún archivo Python existe sin su especificación.**
+3. **Cada clase tiene un único propósito.**
+4. **El repositorio es autoexplicativo.**
 
 ## Licencia
 
-MIT License.
-
-## Estado
-
-**Sprint 0 — Fundación.** Esqueleto del proyecto, documentación base, ADRs, diagramas.
+MIT License. Ver [LICENSE](LICENSE).

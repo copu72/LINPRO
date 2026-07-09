@@ -1,61 +1,62 @@
 # LINPRO — Contexto del proyecto
 
 **Versión:** 0.0.1
-**Sprint:** 0
-**Último commit:** 7ce59ec
+**Sprint:** 0 (Fundación)
+**Fase:** 0 — Arquitectura
 **Fecha:** 2026-07-09
 
 ---
 
 ## Módulos / Hitos
 
-| Estado | Módulo | Descripción |
-|--------|--------|-------------|
-| ☑ | Arquitectura | Sistema de plugins, objeto Project, ADRs |
-| ☑ | Estructura | Carpetas, git, CI, pyproject.toml |
-| ☑ | Documentación | Especificaciones REQ-XXXX, diagramas /design |
-| ☐ | Geometría | Alignment, curvas, clotoides, topology |
-| ☐ | PK | Sistema de puntos kilométricos |
-| ☐ | Buffer | Área de influencia alrededor del eje |
-| ☐ | Municipios | Análisis de afección municipal |
-| ☐ | Catastro | Análisis de afección catastral |
-| ☐ | Carreteras | Análisis de afección viaria |
-| ☐ | Caminos | Análisis de caminos |
-| ☐ | Ríos | Análisis hidrográfico |
-| ☐ | Infraestructuras | Cruces con infraestructuras existentes |
-| ☐ | GIS | Descarga y procesamiento de datos geográficos |
-| ☐ | CAD | Exportación DWG/DXF |
-| ☐ | Excel | Informes profesionales |
-| ☐ | GUI | Interfaz gráfica PySide6 |
+| Estado | Módulo | Docs | Código |
+|--------|--------|------|--------|
+| ☑ | Arquitectura | ✅ 6 docs | ❌ |
+| ☑ | Estructura del repo | ✅ | ✅ |
+| ☑ | Project Charter | ✅ | ❌ |
+| ☑ | Requisitos funcionales | ✅ FR-0001 a FR-0010 | ❌ |
+| ☑ | Casos de uso | ✅ UC-001 a UC-004 | ❌ |
+| ☑ | Convenciones técnicas | ✅ 5 docs | ❌ |
+| ☑ | ADRs | ✅ 10 decisiones | ❌ |
+| ☑ | Diagramas de diseño | ✅ 5 .drawio | ❌ |
+| ☐ | Core (Project, config, logging) | Pendiente | ❌ |
+| ☐ | Geometry (Alignment, PK, Buffer) | ✅ README | ❌ |
+| ☐ | GIS (descargas, proyecciones) | Pendiente | ❌ |
+| ☐ | CAD (DXF/DWG) | ✅ README | ❌ |
+| ☐ | GUI (PySide6) | ✅ README | ❌ |
+| ☐ | Excel / Reports | ✅ README | ❌ |
 
 ---
 
-## Pendiente
+## Pendiente inmediato
 
-- [ ] Crear motor geométrico (Sprint 1)
+- [ ] Iniciar Sprint 1: LINPRO Core
 
 ## Próximo objetivo
 
-**Sprint 1 — Motor Geométrico:** Implementar Alignment con rectas, curvas circulares, clotoides, PK y buffer.
+**Sprint 1 — Core:** Implementar objeto Project, configuración, logging, excepciones y sistema de versiones.
 
 ---
 
-## Últimas especificaciones creadas
+## Documentación generada (40+ archivos)
 
-- REQ-0001: Leer eje
-- REQ-0002: Calcular PK
-- REQ-0003: Generar buffer
-- REQ-0004: Intersecciones con geometrías externas
+```
+docs/
+├── 00_Project/          5 documentos (Charter, Objectives, Roadmap, Glossary, Context)
+├── 01_Functional/       14 documentos (FR-0001 a FR-0010, UC-001 a UC-004)
+├── 02_Technical/        5 documentos (Coding Standards, Naming, Python Guidelines, Dependencies, Repository Rules)
+├── 03_Architecture/     6 documentos (Overall, Core, Plugin, Geometry, GUI, Database)
+├── 04_Modules/          11 READMEs (Alignment, PK, Buffer, Municipalities, Cadastre, Roads, Hydrology, Infrastructure, Excel, DWG, GUI, Reports)
+├── 05_API/              1 documento (API Reference)
+├── 06_Testing/          1 documento (Testing Strategy)
+├── 07_Development/      2 documentos (Workflow, Environment Setup)
+├── 08_Releases/         1 documento (Release Policy)
+```
 
 ## Decisiones registradas
 
-- ADR-001: Arquitectura General
-- ADR-002: Python
-- ADR-003: PySide6
-- ADR-004: GeoPandas
-- ADR-005: AutoCAD (DXF como formato primario)
-- ADR-006: Catastro (WFS Sede Electrónica)
-- ADR-007: Carreteras (MITMA + OSM)
-- ADR-008: Ríos (MITECO + Confederaciones)
-- ADR-009: Excel (openpyxl)
-- ADR-010: Instalador (pip + PyInstaller)
+`decisions/` — ADR-001 a ADR-010
+
+## Diagramas
+
+`design/` — geometry_engine.drawio, gui.drawio, database.drawio, workflow.drawio, modules.drawio
