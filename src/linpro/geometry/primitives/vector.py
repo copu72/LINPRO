@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from linpro.geometry.primitives.point import Point
@@ -23,7 +23,7 @@ class Vector:
         return self._y
 
     @property
-    def xy(self) -> Tuple[float, float]:
+    def xy(self) -> tuple[float, float]:
         return (self._x, self._y)
 
     @property
@@ -78,8 +78,7 @@ class Vector:
         return f"Vector({self._x:.3f}, {self._y:.3f})"
 
     @staticmethod
-    def from_points(p1: "Point", p2: "Point") -> "Vector":
-        from linpro.geometry.primitives.point import Point
+    def from_points(p1: Point, p2: Point) -> Vector:
         return Vector(p2.x - p1.x, p2.y - p1.y)
 
     @staticmethod

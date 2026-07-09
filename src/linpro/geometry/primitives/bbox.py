@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from typing import List, Optional, Tuple
 
 
 class BoundingBox:
@@ -38,7 +37,7 @@ class BoundingBox:
         return self._ymax - self._ymin
 
     @property
-    def center(self) -> "Point":
+    def center(self) -> Point:
         from linpro.geometry.primitives.point import Point
         return Point((self._xmin + self._xmax) / 2.0, (self._ymin + self._ymax) / 2.0)
 
@@ -46,7 +45,7 @@ class BoundingBox:
     def area(self) -> float:
         return self.width * self.height
 
-    def contains_point(self, point: "Point") -> bool:
+    def contains_point(self, point: Point) -> bool:
         return self._xmin <= point.x <= self._xmax and self._ymin <= point.y <= self._ymax
 
     def contains_bbox(self, other: BoundingBox) -> bool:
@@ -73,7 +72,7 @@ class BoundingBox:
             max(self._ymax, other._ymax),
         )
 
-    def intersection(self, other: BoundingBox) -> Optional[BoundingBox]:
+    def intersection(self, other: BoundingBox) -> BoundingBox | None:
         if not self.intersects(other):
             return None
         return BoundingBox(
@@ -92,15 +91,14 @@ class BoundingBox:
         )
 
     @staticmethod
-    def from_points(points: List["Point"]) -> BoundingBox:
+    def from_points(points: list[Point]) -> BoundingBox:
         xs = [p.x for p in points]
         ys = [p.y for p in points]
         return BoundingBox(min(xs), min(ys), max(xs), max(ys))
 
     @staticmethod
-    def from_segments(segments: List["Segment"]) -> BoundingBox:
-        from linpro.geometry.primitives.segment import Segment
-        points: List = []
+    def from_segments(segments: list[Segment]) -> BoundingBox:
+        points: list = []
         for seg in segments:
             points.append(seg.start)
             points.append(seg.end)

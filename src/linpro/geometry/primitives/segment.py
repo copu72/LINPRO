@@ -2,22 +2,18 @@
 
 from __future__ import annotations
 
-import math
-from typing import Optional, Tuple
-
 
 class Segment:
-    def __init__(self, start: "Point", end: "Point") -> None:
-        from linpro.geometry.primitives.point import Point
+    def __init__(self, start: Point, end: Point) -> None:
         self._start = start
         self._end = end
 
     @property
-    def start(self) -> "Point":
+    def start(self) -> Point:
         return self._start
 
     @property
-    def end(self) -> "Point":
+    def end(self) -> Point:
         return self._end
 
     @property
@@ -25,11 +21,11 @@ class Segment:
         return self._start.distance_to(self._end)
 
     @property
-    def midpoint(self) -> "Point":
+    def midpoint(self) -> Point:
         return self._start.midpoint(self._end)
 
     @property
-    def direction(self) -> "Vector":
+    def direction(self) -> Vector:
         from linpro.geometry.primitives.vector import Vector
         return Vector.from_points(self._start, self._end).normalized
 
@@ -37,7 +33,7 @@ class Segment:
     def angle(self) -> float:
         return self.direction.angle
 
-    def point_at(self, distance: float) -> "Point":
+    def point_at(self, distance: float) -> Point:
         from linpro.geometry.primitives.point import Point
         ratio = distance / self.length if self.length > 0 else 0.0
         ratio = max(0.0, min(1.0, ratio))
@@ -46,7 +42,7 @@ class Segment:
             self._start.y + (self._end.y - self._start.y) * ratio,
         )
 
-    def distance_to_point(self, point: "Point") -> Tuple[float, float, float]:
+    def distance_to_point(self, point: Point) -> tuple[float, float, float]:
         from linpro.geometry.primitives.point import Point
         dx = self._end.x - self._start.x
         dy = self._end.y - self._start.y
@@ -62,14 +58,14 @@ class Segment:
         dist = proj.distance_to(point)
         return (dist, t, dist)
 
-    def contains_point(self, point: "Point", tolerance: float = 1e-9) -> bool:
+    def contains_point(self, point: Point, tolerance: float = 1e-9) -> bool:
         dist, t, _ = self.distance_to_point(point)
         return dist <= tolerance and 0.0 <= t <= 1.0
 
     def intersects(self, other: Segment) -> bool:
         return self.intersection(other) is not None
 
-    def intersection(self, other: Segment) -> Optional["Point"]:
+    def intersection(self, other: Segment) -> Point | None:
         from linpro.geometry.primitives.point import Point
         x1, y1 = self._start.x, self._start.y
         x2, y2 = self._end.x, self._end.y

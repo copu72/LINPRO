@@ -1,19 +1,30 @@
-"""GEOM-001: Point.
+"""GEOM-004: Point — punto en el espacio 2D/3D.
 
-Punto en el plano cartesiano 2D con coordenadas (x, y).
-Es la primitiva fundamental de todo el Geometry Engine.
+Inmutable, hashable, serializable.
+Es la primitiva fundamental del Geometry Engine de LINPRO.
 """
 
 from __future__ import annotations
 
+import json
 import math
-from typing import Tuple
+
+from linpro.geometry.exceptions import GeometryError
+from linpro.geometry.kernel.constants import EPSILON
+from linpro.geometry.kernel.validation import Validation
+
+_Coord = int | float
+_Tuple3 = tuple[float, float, float]
 
 
 class Point:
-    def __init__(self, x: float, y: float) -> None:
-        self._x = float(x)
-        self._y = float(y)
+    _EPSILON: float = EPSILON
+
+    def __init__(self, x: _Coord, y: _Coord, z: _Coord = 0.0) -> None:
+        Validation.assert_finite_coordinate(x, y, z)
+        self._x: float = float(x)
+        self._y: float = float(y)
+        self._z: float = float(z)
 
     @property
     def x(self) -> float:
@@ -24,62 +35,67 @@ class Point:
         return self._y
 
     @property
-    def xy(self) -> Tuple[float, float]:
-        return (self._x, self._y)
+    def z(self) -> float:
+        return self._z
 
     def distance_to(self, other: Point) -> float:
         dx = self._x - other._x
         dy = self._y - other._y
-        return math.sqrt(dx * dx + dy * dy)
+        dz = self._z - other._z
+        return math.sqrt(dx * dx + dy * dy + dz * dz)
 
-    def midpoint(self, other: Point) -> Point:
-        return Point((self._x + other._x) / 2.0, (self._y + other._y) / 2.0)
+    def to_tuple(self) -> _Tuple3:
+        return (self._x, self._y, self._z)
 
-    def translate(self, dx: float, dy: float) -> Point:
-        return Point(self._x + dx, self._y + dy)
+    def to_dict(self) -> dict[str, float]:
+        return {"x": self._x, "y": self._y, "z": self._z}
 
-    def rotate(self, angle: float, center: Point | None = None) -> Point:
-        cx = center._x if center else 0.0
-        cy = center._y if center else 0.0
-        rx = self._x - cx
-        ry = self._y - cy
-        cos_a = math.cos(angle)
-        sin_a = math.sin(angle)
-        return Point(cx + rx * cos_a - ry * sin_a, cy + rx * sin_a + ry * cos_a)
+    def to_json(self, **kwargs) -> str:
+        return json.dumps(self.to_dict(), **kwargs)
 
-    def scale(self, factor: float, center: Point | None = None) -> Point:
-        cx = center._x if center else 0.0
-        cy = center._y if center else 0.0
-        return Point(cx + (self._x - cx) * factor, cy + (self._y - cy) * factor)
+    def to_wkt(self) -> str:
+        return f"POINT ({self._x} {self._y})"
 
-    def normalize(self) -> Point:
-        d = math.sqrt(self._x * self._x + self._y * self._y)
-        if d == 0:
-            return Point(0.0, 0.0)
-        return Point(self._x / d, self._y / d)
+    def almost_equal(self, other: object, tol: float = EPSILON) -> bool:
+        if not isinstance(other, Point):
+            return NotImplemented
+        return (
+            math.isclose(self._x, other._x, rel_tol=tol, abs_tol=tol)
+            and math.isclose(self._y, other._y, rel_tol=tol, abs_tol=tol)
+            and math.isclose(self._z, other._z, rel_tol=tol, abs_tol=tol)
+        )
 
-    def dot(self, other: Point) -> float:
-        return self._x * other._x + self._y * other._y
+    def check_invariants(self) -> None:
+        Validation.assert_finite_coordinate(self._x, self._y, self._z)
 
-    def cross(self, other: Point) -> float:
-        return self._x * other._y - self._y * other._x
+    @classmethod
+    def from_tuple(cls, data: tuple | list) -> Point:
+        if not isinstance(data, (tuple, list)):
+            raise GeometryError(f"Expected tuple or list, got {type(data).__name__}")
+        if len(data) == 2:
+            return cls(data[0], data[1])
+        if len(data) == 3:
+            return cls(data[0], data[1], data[2])
+        raise GeometryError(f"Expected 2 or 3 elements, got {len(data)}")
 
-    def __add__(self, other: Point) -> Point:
-        return Point(self._x + other._x, self._y + other._y)
+    @classmethod
+    def from_dict(cls, data: dict) -> Point:
+        return cls(data["x"], data["y"], data.get("z", 0.0))
 
-    def __sub__(self, other: Point) -> Point:
-        return Point(self._x - other._x, self._y - other._y)
-
-    def __mul__(self, scalar: float) -> Point:
-        return Point(self._x * scalar, self._y * scalar)
+    @classmethod
+    def from_json(cls, data: str) -> Point:
+        return cls.from_dict(json.loads(data))
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Point):
             return NotImplemented
-        return math.isclose(self._x, other._x) and math.isclose(self._y, other._y)
+        return self.almost_equal(other, self._EPSILON)
 
     def __hash__(self) -> int:
-        return hash((round(self._x, 9), round(self._y, 9)))
+        return hash((round(self._x, 9), round(self._y, 9), round(self._z, 9)))
 
     def __repr__(self) -> str:
-        return f"Point({self._x:.3f}, {self._y:.3f})"
+        return f"Point({self._x}, {self._y}, {self._z})"
+
+    def __str__(self) -> str:
+        return f"Point({self._x}, {self._y}, {self._z})"
