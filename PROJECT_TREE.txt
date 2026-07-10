@@ -60,6 +60,7 @@ docs\04_Modules\Geometry/
 docs\04_Modules\Geometry\Alignment/
 docs\04_Modules\Geometry\Buffer/
 docs\04_Modules\Geometry\Geometry/
+docs\04_Modules\Geometry\Kernel/
 docs\04_Modules\Geometry\PK/
 docs\04_Modules\Geometry\Point/
 docs\04_Modules\Geometry\Vector/
@@ -73,6 +74,7 @@ docs\05_API/
 docs\06_Testing/
 docs\07_Development/
 docs\08_Releases/
+docs\RFC/
 examples/
 examples\gasoducto/
 examples\linea_132kV/
@@ -153,6 +155,7 @@ tests\unit\excel/
 tests\unit\geometry/
 tests\unit\geometry\algorithms/
 tests\unit\geometry\curves/
+tests\unit\geometry\kernel/
 tests\unit\geometry\primitives/
 tests\unit\gis/
 tools/
@@ -229,6 +232,11 @@ docs\04_Modules\Geometry\Alignment\README.md
 docs\04_Modules\Geometry\Buffer\README.md
 docs\04_Modules\Geometry\Geometry\Design.md
 docs\04_Modules\Geometry\Geometry\README.md
+docs\04_Modules\Geometry\Kernel\API.md
+docs\04_Modules\Geometry\Kernel\Design.md
+docs\04_Modules\Geometry\Kernel\Examples.md
+docs\04_Modules\Geometry\Kernel\README.md
+docs\04_Modules\Geometry\Kernel\Requirements.md
 docs\04_Modules\Geometry\PK\README.md
 docs\04_Modules\Geometry\Point\API.md
 docs\04_Modules\Geometry\Point\Design.md
@@ -254,6 +262,7 @@ docs\06_Testing\Testing_Strategy.md
 docs\07_Development\Development_Workflow.md
 docs\07_Development\Environment_Setup.md
 docs\08_Releases\Release_Policy.md
+docs\RFC\RFC-0001-Geometry-Kernel.md
 LICENSE
 LINPRO_CONTEXT.md
 LINPRO_PHILOSOPHY.md
@@ -289,6 +298,10 @@ src\linpro\engine\__init__.py
 src\linpro\events\__init__.py
 src\linpro\geometry\__init__.py
 src\linpro\geometry\exceptions\__init__.py
+src\linpro\geometry\exceptions\geometry_error.py
+src\linpro\geometry\exceptions\invalid_coordinate.py
+src\linpro\geometry\exceptions\precision_error.py
+src\linpro\geometry\exceptions\validation_error.py
 src\linpro\geometry\kernel\__init__.py
 src\linpro\geometry\kernel\constants.py
 src\linpro\geometry\kernel\geometry.py
@@ -318,4 +331,7 @@ tests\unit\core\test_logging.py
 tests\unit\core\test_plugins.py
 tests\unit\core\test_project.py
 tests\unit\core\test_settings.py
+tests\unit\geometry\kernel\test_geometry.py
+tests\unit\geometry\kernel\test_tolerance.py
+tests\unit\geometry\kernel\test_validators.py
 tests\unit\geometry\primitives\test_point.py
