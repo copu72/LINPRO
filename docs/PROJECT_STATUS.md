@@ -22,7 +22,8 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 |---|---|---|
 | RFC-0001 | Geometry Kernel | ✅ Aprobado |
 | RFC-0002 | Point | ✅ Aprobado |
-| RFC-0003 | BoundingBox | 📝 Pendiente aprobación |
+| RFC-0003 | BoundingBox | ✅ Aprobado |
+| RFC-0004A | Álgebra Vectorial | 📝 Pendiente aprobación |
 
 ---
 
@@ -83,7 +84,13 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 
 ---
 
-## 6. Riesgos
+## 6. Riesgos y reglas vigentes
+
+| Regla | Descripción | Origen |
+|---|---|---|
+| **Modelo antes que código** | Ninguna entidad se implementa hasta que su modelo matemático esté definido y aprobado | RFC-0004A |
+| **Dominio sobre primitivas** | Ninguna clase devuelve tipos primitivos cuando existe una entidad del dominio | Lead Architect |
+| **No Point + Point** | La suma de dos posiciones no tiene significado geométrico | RFC-0004A |
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |---|---|---|---|
@@ -96,21 +103,25 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 ## 7. Próximos objetivos (Sprint 3.2)
 
 1. ✅ **TASK-0003A** — Point (APROBADO)
-2. ✅ **TASK-0003B** — BoundingBox (pendiente aprobación RFC-0003)
-3. 📝 **RFC-0004** — Vector
-4. 📝 **RFC-0005** — Segment
+2. ✅ **TASK-0003B** — BoundingBox (APROBADO)
+3. 📝 **RFC-0004A** — Álgebra Vectorial (modelo matemático)
+4. 📝 **RFC-0004B** — Vector (implementación)
+5. 📝 **RFC-0005** — Segment
+
+> **Regla:** Ninguna entidad se implementa hasta que su modelo matemático
+> esté definido y aprobado (RFC-0004A antes que Vector).
 
 ---
 
-## 8. Jerarquía actual del Geometry Engine
+## 8. Jerarquía y documentos del Geometry Engine
 
 ```
 Geometry (ABC)
 │
 ├── Point          ✅ Completado (98% cov)
 ├── BoundingBox    ✅ Completado (100% cov)
-├── Vector         📝 Prototipo (0% cov, pendiente RFC-0004)
-├── Segment        📝 Prototipo (0% cov, pendiente RFC-0005)
+├── Vector         📝 Álgebra definida (RFC-0004A); impl. pendiente
+├── Segment        📅 Prototipo (0% cov, pendiente)
 │
 ├── Curve (ABC)    📅 Futuro Sprint 3.3
 │   ├── Line
@@ -122,9 +133,34 @@ Geometry (ABC)
     └── Polygon
 ```
 
+Documentos matemáticos permanentes:
+
+| Documento | Ubicación | Descripción |
+|---|---|---|
+| Álgebra Vectorial | `docs/Geometry/Algebra.md` | Especificación matemática del motor. 30 operaciones definidas |
+| RFC-0004A | `docs/RFC/RFC-0004A-Algebra-Vectorial.md` | 30 responsabilidades, 4 ADRs, tabla completa de operadores |
+
+## 9. Reglas de álgebra de operadores
+
+Decisión arquitectónica clave (RFC-0004A):
+
+| Operación | Resultado | Estado |
+|---|---|---|
+| Point - Point | Vector | ✅ Permitido |
+| Point + Vector | Point | ✅ Permitido |
+| Point - Vector | Point | ✅ Permitido |
+| Vector + Vector | Vector | ✅ Permitido |
+| Vector - Vector | Vector | ✅ Permitido |
+| Vector * escalar | Vector | ✅ Permitido |
+| escalar * Vector | Vector | ✅ Permitido |
+| Vector / escalar | Vector | ✅ Permitido |
+| -Vector | Vector | ✅ Permitido |
+| Point + Point | ❌ Error | 🚫 Prohibido |
+| Point * escalar | ❌ Error | 🚫 Prohibido |
+
 ---
 
-## 9. Líneas de código (LOC)
+## 10. Líneas de código (LOC)
 
 | Módulo | Líneas | % del total |
 |---|---|---|

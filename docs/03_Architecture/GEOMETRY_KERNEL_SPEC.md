@@ -524,12 +524,13 @@ from linpro.geometry import (
 | Excepciones propias | ✅ |
 | Point (especificación + implementación + tests) | ✅ |
 
-### Sprint 3.2 — Primitivas
+### Sprint 3.2 — Álgebra y Primitivas
 
 | Entregable | Prioridad |
 |---|---|
-| **BoundingBox** | **Crítica** — contrato `Geometry.bbox` |
-| Vector | Alta |
+| **BoundingBox** | **Crítica** — ✅ Completado |
+| **RFC-0004A — Álgebra Vectorial** | **Crítica** — modelo matemático antes que código |
+| Vector | Alta (tras aprobación RFC-0004A) |
 | Segment | Alta |
 
 ### Sprint 3.3 — Curvas
