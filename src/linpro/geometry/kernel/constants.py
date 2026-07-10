@@ -1,22 +1,20 @@
-"""Global precision constants for the LINPRO Geometry Engine.
+"""Global constants for the Geometry Kernel."""
 
-Three tolerance levels:
-  - MATHEMATICAL  (1e-12) — internal arithmetic
-  - GEOMETRICAL   (1e-9)  — entity comparisons
-  - VISUAL        (1e-6)  — display / CAD export
-"""
+# ---- Identification ----
+VERSION: str = "0.3.0-dev"
 
-# Mathematical tolerance — for internal arithmetic
-MATHEMATICAL_EPSILON: float = 1e-12
+# ---- Defaults ----
+DEFAULT_CRS: str = "EPSG:25830"
+DEFAULT_PRECISION: int = 9
 
-# Geometrical tolerance — for entity comparisons and predicates
-EPSILON: float = 1e-9
+# ---- Tolerance levels ----
+EPSILON_MATH: float = 1e-12
+EPSILON_GEOMETRY: float = 1e-9
+EPSILON_VISUAL: float = 1e-6
 
-# Angular tolerance — for angle comparisons
+# ---- Specialised ----
 ANGLE_EPSILON: float = 1e-10
-
-# Distance tolerance — for distance comparisons
 DISTANCE_EPSILON: float = 1e-8
 
-# Visual tolerance — for display / CAD export snapping
-VISUAL_EPSILON: float = 1e-6
+# ---- Iteration ----
+MAX_ITERATIONS: int = 1000

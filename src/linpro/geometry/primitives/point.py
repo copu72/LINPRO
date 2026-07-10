@@ -10,18 +10,21 @@ import json
 import math
 
 from linpro.geometry.exceptions import GeometryError
-from linpro.geometry.kernel.constants import EPSILON
-from linpro.geometry.kernel.validation import Validation
+from linpro.geometry.kernel.constants import EPSILON_GEOMETRY
+from linpro.geometry.kernel.validation import NumericValidator
+from linpro.geometry.kernel.tolerance import Tolerance
 
 _Coord = int | float
 _Tuple3 = tuple[float, float, float]
 
 
 class Point:
-    _EPSILON: float = EPSILON
+    _EPSILON: float = EPSILON_GEOMETRY
 
     def __init__(self, x: _Coord, y: _Coord, z: _Coord = 0.0) -> None:
-        Validation.assert_finite_coordinate(x, y, z)
+        NumericValidator.assert_finite(x, "x")
+        NumericValidator.assert_finite(y, "y")
+        NumericValidator.assert_finite(z, "z")
         self._x: float = float(x)
         self._y: float = float(y)
         self._z: float = float(z)
@@ -56,7 +59,7 @@ class Point:
     def to_wkt(self) -> str:
         return f"POINT ({self._x} {self._y})"
 
-    def almost_equal(self, other: object, tol: float = EPSILON) -> bool:
+    def almost_equal(self, other: object, tol: float = EPSILON_GEOMETRY) -> bool:
         if not isinstance(other, Point):
             return NotImplemented
         return (
@@ -66,7 +69,9 @@ class Point:
         )
 
     def check_invariants(self) -> None:
-        Validation.assert_finite_coordinate(self._x, self._y, self._z)
+        NumericValidator.assert_finite(self._x, "x")
+        NumericValidator.assert_finite(self._y, "y")
+        NumericValidator.assert_finite(self._z, "z")
 
     @classmethod
     def from_tuple(cls, data: tuple | list) -> Point:

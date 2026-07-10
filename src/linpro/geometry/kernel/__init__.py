@@ -7,22 +7,37 @@ and base contracts for all geometric types.
 
 from linpro.geometry.kernel.constants import (
     ANGLE_EPSILON,
+    DEFAULT_CRS,
+    DEFAULT_PRECISION,
     DISTANCE_EPSILON,
-    EPSILON,
-    VISUAL_EPSILON,
+    EPSILON_GEOMETRY,
+    EPSILON_MATH,
+    EPSILON_VISUAL,
+    MAX_ITERATIONS,
+    VERSION,
 )
 from linpro.geometry.kernel.geometry import Geometry
-from linpro.geometry.kernel.precision import Precision
-from linpro.geometry.kernel.tolerance import Tolerance
-from linpro.geometry.kernel.validation import Validation
+from linpro.geometry.kernel.tolerance import Tolerance, ToleranceLevel
+from linpro.geometry.kernel.validation import (
+    CoordinateValidator,
+    GeometryValidator,
+    NumericValidator,
+)
 
 __all__ = [
-    "EPSILON",
     "ANGLE_EPSILON",
+    "DEFAULT_CRS",
+    "DEFAULT_PRECISION",
     "DISTANCE_EPSILON",
-    "VISUAL_EPSILON",
-    "Tolerance",
-    "Precision",
-    "Validation",
+    "EPSILON_GEOMETRY",
+    "EPSILON_MATH",
+    "EPSILON_VISUAL",
+    "MAX_ITERATIONS",
+    "VERSION",
     "Geometry",
+    "Tolerance",
+    "ToleranceLevel",
+    "CoordinateValidator",
+    "GeometryValidator",
+    "NumericValidator",
 ]

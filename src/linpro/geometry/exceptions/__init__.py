@@ -1,17 +1,16 @@
-"""Custom exceptions for the LINPRO Geometry Engine."""
+"""Custom exceptions for the LINPRO Geometry Engine.
 
+Each exception lives in its own module for clean imports.
+"""
 
-class GeometryError(Exception):
-    """Base exception for all geometry engine errors."""
+from linpro.geometry.exceptions.geometry_error import GeometryError
+from linpro.geometry.exceptions.invalid_coordinate import InvalidCoordinateError
+from linpro.geometry.exceptions.precision_error import PrecisionError
+from linpro.geometry.exceptions.validation_error import ValidationError
 
-
-class InvalidCoordinateError(GeometryError, ValueError):
-    """Raised when a coordinate value is invalid (NaN, inf, wrong type)."""
-
-
-class PrecisionError(GeometryError, ValueError):
-    """Raised when a precision-related operation fails."""
-
-
-class ValidationError(GeometryError, ValueError):
-    """Raised when a geometric validation fails."""
+__all__ = [
+    "GeometryError",
+    "InvalidCoordinateError",
+    "PrecisionError",
+    "ValidationError",
+]
