@@ -1,7 +1,8 @@
 """Tests for Tolerance class — GEOM-002."""
 
 import math
-from linpro.geometry.kernel.tolerance import Tolerance, ToleranceLevel
+
+from linpro.geometry.kernel.tolerance import Tolerance
 
 
 class TestToleranceLevel:
@@ -31,9 +32,6 @@ class TestToleranceLevel:
 
     def test_geometry_equals_beyond(self):
         assert Tolerance.geometry.equals(1.0, 1.00001) is False
-
-    def test_visual_equals_wide(self):
-        assert Tolerance.visual.equals(1.0, 1.000001) is True
 
     def test_visual_equals_wide(self):
         assert Tolerance.visual.equals(1.0, 1.000001) is True

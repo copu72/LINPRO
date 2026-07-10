@@ -1,7 +1,7 @@
 """Tests for Geometry abstract base class."""
 
-import json
 import pytest
+
 from linpro.geometry.kernel.geometry import Geometry
 
 

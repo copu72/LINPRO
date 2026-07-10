@@ -1,0 +1,17 @@
+{
+  "entity": "GEOM-POINT-GOLDEN-001",
+  "description": "Origen 2D/3D",
+  "version": "0.1.0",
+  "to_dict": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "to_wkt": "POINT (0.0 0.0)",
+  "to_tuple": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "repr": "Point(0.0, 0.0, 0.0)"
+}

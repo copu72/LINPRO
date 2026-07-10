@@ -1,13 +1,14 @@
 """Tests for NumericValidator, CoordinateValidator, GeometryValidator."""
 
 import pytest
+
+from linpro.geometry import Point
+from linpro.geometry.exceptions import InvalidCoordinateError, ValidationError
 from linpro.geometry.kernel.validation import (
-    NumericValidator,
     CoordinateValidator,
     GeometryValidator,
+    NumericValidator,
 )
-from linpro.geometry.exceptions import InvalidCoordinateError, ValidationError
-from linpro.geometry import Point
 
 
 class TestNumericValidator:
