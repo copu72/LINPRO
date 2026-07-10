@@ -528,9 +528,9 @@ from linpro.geometry import (
 
 | Entregable | Prioridad |
 |---|---|
+| **BoundingBox** | **Crítica** — contrato `Geometry.bbox` |
 | Vector | Alta |
 | Segment | Alta |
-| BoundingBox | Alta |
 
 ### Sprint 3.3 — Curvas
 
