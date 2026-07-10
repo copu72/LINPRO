@@ -1,0 +1,21 @@
+{
+  "entity": "GEOM-VEC-GOLDEN-001",
+  "description": "Vector tipo desplazamiento UTM",
+  "version": "0.4.0",
+  "to_dict": {
+    "dx": 300000.0,
+    "dy": 4600000.0,
+    "dz": 150.0
+  },
+  "to_tuple": [
+    300000.0,
+    4600000.0,
+    150.0
+  ],
+  "length": 4609772.231086912,
+  "length_squared": 21250000022500.0,
+  "angle": 1.5056711634605107,
+  "is_zero": false,
+  "is_unit": false,
+  "repr": "Vector(300000.000, 4600000.000, 150.000)"
+}

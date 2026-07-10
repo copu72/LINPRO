@@ -2,6 +2,7 @@
 
 # ---- Identification ----
 VERSION: str = "0.3.0-dev"
+KERNEL_VERSION: str = "0.3.0"  # 0.1 Geometry ABC, 0.2 Point, 0.3 BoundingBox, 0.4 Vector, 0.5 Segment
 
 # ---- Defaults ----
 DEFAULT_CRS: str = "EPSG:25830"

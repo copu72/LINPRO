@@ -497,7 +497,72 @@ from linpro.geometry import (
 
 ---
 
-## 19. Casos prohibidos
+## 19. ADRs globales del Kernel
+
+### ADR-0007: Strong Types
+
+**Contexto:** El Geometry Engine tiende a devolver tipos primitivos (`float`,
+`tuple`) donde existen entidades del dominio (BoundingBox, Vector, Distance).
+
+**Decisión:** Ninguna clase del Kernel devuelve tipos primitivos cuando existe
+una entidad del dominio que pueda representar el resultado.
+
+| Contexto | ❌ Prohibido | ✅ Correcto |
+|---|---|---|
+| BoundingBox de una entidad | `-> tuple[float, float, float, float]` | `-> BoundingBox` |
+| Distancia entre dos puntos | `-> float` | `-> Distance` (futuro) |
+| Diferencia de puntos | `-> tuple[float, float]` | `-> Vector` |
+| Longitud de segmento | `-> float` | `-> Distance` (futuro) |
+| PK de Polyline | `-> float` | `-> PK` (futuro) |
+| Azimut | `-> float` | `-> Angle` (futuro) |
+
+**Consecuencias:**
++ API semánticamente rica y autodocumentada
++ El tipo lleva la unidad y el contexto
++ Polimorfismo: `Geometry` puede pedir `.bbox` sin saber qué obtendrá
+- Más clases en el dominio (gestionable)
+
+### ADR-0008: Inmutabilidad total del Kernel
+
+**Contexto:** El Geometry Engine es un modelo matemático. La mutación
+introduce efectos secundarios que rompen la predictibilidad.
+
+**Decisión:** Todas las primitivas geométricas (Point, Vector, BoundingBox,
+Segment, etc.) son **inmutables**. Las operaciones devuelven nuevas
+instancias. No hay setters públicos.
+
+**Consecuencias:**
++ Seguridad en contenedores (sets, dicts)
++ Caching seguro en entidades compuestas
++ Sin efectos secundarios en pipelines de operaciones
++ Facilidad para paralelismo futuro
+- Más allocaciones (cada operación crea un nuevo objeto)
+
+### ADR-0009: Versionado independiente del Kernel
+
+**Contexto:** El Geometry Kernel puede evolucionar a distinto ritmo que
+el resto de LINPRO. El proyecto versiona el conjunto; el Kernel necesita
+su propia versión para conocer el estado del motor geométrico.
+
+**Decisión:** `kernel/constants.py` expone `KERNEL_VERSION`. Las versiones
+del Kernel son independientes de la versión del proyecto LINPRO.
+
+```
+Kernel 0.1 — Geometry (ABC)
+Kernel 0.2 — Point
+Kernel 0.3 — BoundingBox
+Kernel 0.4 — Vector
+Kernel 0.5 — Segment
+```
+
+**Consecuencias:**
++ Trazabilidad del motor independiente
++ Compatibilidad hacia atrás más fácil de gestionar
+- Dos números de versión que mantener
+
+---
+
+## 20. Casos prohibidos
 
 | Caso | Prohibido | Alternativa |
 |---|---|---|

@@ -8,6 +8,9 @@
 
 ## 1. Resumen ejecutivo
 
+**Kernel version:** 0.3.0 (Geometry ABC → Point → BoundingBox)
+**Project version:** 0.1.0-dev
+
 Sprint 3.1 completado (Geometry Kernel). Sprint 3.2 en curso con TASK-0003A
 (Point) aprobada ✅ y TASK-0003B (BoundingBox) implementada ✅.
 
@@ -23,7 +26,7 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 | RFC-0001 | Geometry Kernel | ✅ Aprobado |
 | RFC-0002 | Point | ✅ Aprobado |
 | RFC-0003 | BoundingBox | ✅ Aprobado |
-| RFC-0004A | Álgebra Vectorial | 📝 Pendiente aprobación |
+| RFC-0004A | Álgebra Vectorial | ✅ Aprobado y congelado |
 
 ---
 
@@ -138,7 +141,10 @@ Documentos matemáticos permanentes:
 | Documento | Ubicación | Descripción |
 |---|---|---|
 | Álgebra Vectorial | `docs/Geometry/Algebra.md` | Especificación matemática del motor. 30 operaciones definidas |
-| RFC-0004A | `docs/RFC/RFC-0004A-Algebra-Vectorial.md` | 30 responsabilidades, 4 ADRs, tabla completa de operadores |
+| RFC-0004A | `docs/RFC/RFC-0004A-Algebra-Vectorial.md` | ✅ Aprobado y congelado. 30 responsabilidades, 4 ADRs |
+| ADR-0007 | `GEOMETRY_KERNEL_SPEC.md §19` | Strong Types — no primitivas cuando existe entidad de dominio |
+| ADR-0008 | `GEOMETRY_KERNEL_SPEC.md §19` | Inmutabilidad total del Kernel |
+| ADR-0009 | `GEOMETRY_KERNEL_SPEC.md §19` | Versionado independiente del Kernel |
 
 ## 9. Reglas de álgebra de operadores
 

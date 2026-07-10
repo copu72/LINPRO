@@ -8,11 +8,15 @@ from __future__ import annotations
 
 import json
 import math
+from typing import TYPE_CHECKING
 
 from linpro.geometry.exceptions import GeometryError
 from linpro.geometry.kernel.constants import EPSILON_GEOMETRY
 from linpro.geometry.kernel.geometry import Geometry
 from linpro.geometry.kernel.validation import NumericValidator
+
+if TYPE_CHECKING:
+    from linpro.geometry.primitives.vector import Vector
 
 _Coord = int | float
 _Tuple3 = tuple[float, float, float]
@@ -137,6 +141,25 @@ class Point(Geometry):
     @classmethod
     def from_json(cls, data: str) -> Point:
         return cls.from_dict(json.loads(data))
+
+    # -- Operadores vectoriales --
+
+    def __sub__(self, other: Point | Vector) -> Vector | Point:
+        from linpro.geometry.primitives.vector import Vector
+        if isinstance(other, Point):
+            return Vector(self._x - other._x, self._y - other._y, self._z - other._z)
+        if isinstance(other, Vector):
+            return Point(self._x - other.dx, self._y - other.dy, self._z - other.dz)
+        return NotImplemented
+
+    def __add__(self, other: Vector) -> Point:
+        from linpro.geometry.primitives.vector import Vector
+        if isinstance(other, Vector):
+            return Point(self._x + other.dx, self._y + other.dy, self._z + other.dz)
+        return NotImplemented
+
+    def __radd__(self, other: Vector) -> Point:
+        return self.__add__(other)
 
     # -- Métodos especiales --
 
