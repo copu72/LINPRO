@@ -1,36 +1,34 @@
 # Naming Convention
 
-| Versión | Fecha       |
-| ------- | ----------- |
-| 1.0     | 2026-07-09 |
-
-## Clases
-
-- `PascalCase`. Sustantivos o frases nominales.
-- Ejemplos: `Project`, `Alignment`, `RoadAnalyzer`, `ParcelCollection`, `CoordinateSystem`.
-
-## Funciones y métodos
-
-- `snake_case`. Verbos o frases verbales.
-- Ejemplos: `calculate_pk`, `get_municipalities`, `validate_geometry`, `export_to_excel`.
-
-## Variables
-
-- `snake_case`. Sustantivos descriptivos.
-- Ejemplos: `total_length`, `parcel_list`, `alignment_points`, `epsg_code`.
-
-## Constantes
-
-- `UPPER_SNAKE_CASE`.
-- Definirse a nivel de módulo o en clases de constantes.
-- Ejemplos: `DEFAULT_EPSG`, `MAX_ITERATIONS`, `PI`, `TOLERANCE_MM`.
-
 ## Archivos
 
-- `snake_case`. Coincidir con el contenido principal.
-- Ejemplos: `alignment.py`, `road_analyzer.py`, `excel_writer.py`, `cadastre_parser.py`.
+| Tipo | Convención | Ejemplo |
+|---|---|---|
+| Módulo | snake_case | `bounding_box.py`, `point.py` |
+| Test | `test_` + nombre módulo | `test_bounding_box.py` |
+| Directorio | snake_case | `geometry/primitives/` |
+| Documentación | PascalCase con guiones | `API-Reference.md` |
 
-## Directorios
+## Identificadores
 
-- `snake_case` o una sola palabra en minúscula.
-- Ejemplos: `geometry/`, `cadastre/`, `excel/`, `io_handlers/`, `tests/`.
+| Elemento | Convención | Correcto | Incorrecto |
+|---|---|---|---|
+| Clase | PascalCase | `BoundingBox` | `bounding_box`, `boundingbox` |
+| Método | snake_case | `distance_to` | `distanceTo`, `DistanceTo` |
+| Propiedad | snake_case | `p.x`, `seg.length` | `p.X`, `seg.Length` |
+| Parámetro | snake_case | `other`, `tolerance` | `otherPoint`, `tolValue` |
+| Variable local | snake_case | `temp_point` | `tempPoint`, `tp` |
+| Constante | UPPER_SNAKE | `EPSILON` | `epsilon`, `Epsilon` |
+| Privado | prefijo _ | `_x`, `_points` | `x_`, `__x` (name mangling) |
+
+## Verbos para métodos
+
+| Operación | Verbo | Ejemplo |
+|---|---|---|
+| Consulta | sin verbo (propiedad) | `p.x`, `seg.length` |
+| Cálculo | `compute_` (caro) | `poly.compute_length()` |
+| Validación | `validate_`, `assert_` | `validate_coordinate` |
+| Conversión | `to_` | `p.to_dict()`, `p.to_wkt()` |
+| Construcción | `from_` | `Point.from_dict(data)` |
+| Transformación | verbo + nueva instancia | `vec.rotate(angle)` |
+| Verificación | `is_`, `has_`, `contains_` | `bbox.contains_point(p)` |

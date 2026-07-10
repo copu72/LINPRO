@@ -1,41 +1,70 @@
 # Coding Standards
 
-| Versión | Fecha       |
-| ------- | ----------- |
-| 1.0     | 2026-07-09 |
+**Aplica a:** Todo el código Python de LINPRO.
+**Incumplir estas normas requiere revisión de arquitectura.**
 
-## Tipado
+## 1. Lenguaje
 
-- Toda la base de código debe pasar `mypy --strict`.
-- No se permite `Any`, `# type: ignore` ni omisiones de tipo en firmas de funciones.
-- Usar `TypeVar`, `Generic`, `Callable`, `Literal`, `TypedDict` cuando corresponda.
+- Python 3.13+.
+- Type hints obligatorios en toda la API pública.
+- `from __future__ import annotations` en todos los archivos.
 
-## Ruff
+## 2. Estilo
 
-- Longitud máxima de línea: 100 caracteres.
-- Reglas activadas: `E` (pycodestyle), `F` (pyflakes), `I` (isort), `W` (warnings), `N` (naming), `UP` (pyupgrade).
-- Configuración en `pyproject.toml`.
+- Seguir PEP 8 estrictamente.
+- Ruff como linter con configuración en `pyproject.toml`.
+- Máximo 100 caracteres por línea.
+- 4 espacios por indentación. No tabs.
 
-## Nombres
+## 3. Imports
 
-- Nombres descriptivos en español para variables, funciones, clases y módulos.
-- Únicamente se usan palabras en inglés para palabras reservadas del lenguaje, bibliotecas estándar y terceras.
-- Preferir nombres largos y explícitos sobre abreviaturas crípticas.
+- Orden: stdlib → terceros → internos. Separados por línea en blanco.
+- Absolutos siempre: `from linpro.geometry.kernel import ...`
+- No se permite `import *`.
+- No se permite imports circulares.
 
-## Comentarios
+## 4. Nombres
 
-- Prohibidos los comentarios superfluos o redundantes.
-- El código debe ser autoexplicativo: nombres claros, tipos explícitos, funciones pequeñas.
-- Los únicos comentarios permitidos son aquellos que documentan una decisión no obvia o una restricción externa.
+| Elemento | Convención | Ejemplo |
+|---|---|---|
+| Clases | PascalCase | `BoundingBox`, `Polyline` |
+| Funciones/métodos | snake_case | `distance_to`, `from_dict` |
+| Variables | snake_case | `point_list`, `tolerance` |
+| Constantes | UPPER_SNAKE_CASE | `EPSILON`, `MAX_ITERATIONS` |
+| Privado | prefijo _ | `_x`, `_points` |
+| Protected | prefijo _ (no usamos `__` name mangling) | `_internal` |
 
-## Tests
+## 5. Documentación
 
-- Toda función nueva debe tener tests unitarios.
-- Los tests deben cubrir casos normales, borde y error.
-- Ejecutar `pytest` antes de cada commit.
+- Google-style docstrings obligatorios en toda la API pública.
+- Cada archivo .py comienza con docstring del módulo.
+- Cada clase tiene docstring con: descripción, invariantes, ejemplo breve.
+- Cada método público tiene Args/Returns/Raises.
 
-## Docstrings
+## 6. Excepciones
 
-- Toda función o método público debe tener docstring.
-- Formato: Google style (sección Args, Returns, Raises si aplica).
-- Las funciones privadas pueden omitir docstring si el nombre es suficientemente descriptivo.
+- Usar excepciones propias del módulo (`GeometryError`, etc.).
+- No lanzar `Exception` genérico.
+- No lanzar `AssertionError` para control de flujo.
+- Capturar excepciones específicas, no `except Exception`.
+
+## 7. Tests
+
+- Un archivo de test por clase: `test_point.py`.
+- Usar pytest. No unittest.
+- Nombres de test descriptivos: `test_distance_to_returns_zero_for_same_point`.
+- Cobertura mínima: 95 % en Geometry Engine, 80 % en el resto.
+
+## 8. Commits
+
+- Prefijo semántico: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`.
+- Máximo 72 caracteres en primera línea.
+- Cuerpo opcional explicando el qué y el por qué.
+
+## 9. Prohibiciones
+
+- No se usa `# noqa` sin justificación en el mismo comentario.
+- No se comentan tests para que pasen.
+- No se deja código comentado.
+- No se usa `print()` en código de producción (usar logging).
+- No se importa `typing` donde se pueda usar sintaxis nativa (`list`, `dict`, `tuple`).
