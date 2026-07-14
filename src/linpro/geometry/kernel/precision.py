@@ -3,6 +3,13 @@
 from __future__ import annotations
 
 
+import math
+
+
+def is_close(a: float, b: float, tol: float = 1e-9) -> bool:
+    return math.isclose(a, b, rel_tol=tol, abs_tol=tol)
+
+
 class Precision:
     @staticmethod
     def round_coordinate(value: float, decimals: int = 9) -> float:

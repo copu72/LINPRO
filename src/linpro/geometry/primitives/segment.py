@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from linpro.geometry.primitives.point import Point
+from linpro.geometry.primitives.vector import Vector
+
 
 class Segment:
     def __init__(self, start: Point, end: Point) -> None:
@@ -26,7 +29,6 @@ class Segment:
 
     @property
     def direction(self) -> Vector:
-        from linpro.geometry.primitives.vector import Vector
         return Vector.from_points(self._start, self._end).normalized
 
     @property
@@ -34,7 +36,6 @@ class Segment:
         return self.direction.angle
 
     def point_at(self, distance: float) -> Point:
-        from linpro.geometry.primitives.point import Point
         ratio = distance / self.length if self.length > 0 else 0.0
         ratio = max(0.0, min(1.0, ratio))
         return Point(
@@ -43,7 +44,6 @@ class Segment:
         )
 
     def distance_to_point(self, point: Point) -> tuple[float, float, float]:
-        from linpro.geometry.primitives.point import Point
         dx = self._end.x - self._start.x
         dy = self._end.y - self._start.y
         length_sq = dx * dx + dy * dy
@@ -66,7 +66,6 @@ class Segment:
         return self.intersection(other) is not None
 
     def intersection(self, other: Segment) -> Point | None:
-        from linpro.geometry.primitives.point import Point
         x1, y1 = self._start.x, self._start.y
         x2, y2 = self._end.x, self._end.y
         x3, y3 = other._start.x, other._start.y

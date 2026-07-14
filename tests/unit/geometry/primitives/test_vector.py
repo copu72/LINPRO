@@ -477,6 +477,11 @@ class TestGeometryContract:
         v = Vector.from_points(Point(0, 0, 0), Point(1, 2, 3))
         assert v.dz == 3.0
 
+    def test_is_valid_invalid_vector(self):
+        v = Vector(1, 2)
+        object.__setattr__(v, "_dx", float("nan"))
+        assert v.is_valid is False
+
 
 # ============================================================
 # Casos límite

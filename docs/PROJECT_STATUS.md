@@ -1,21 +1,19 @@
 # PROJECT_STATUS.md — Cuadro de Mando
 
-**Fecha:** 2026-07-10
-**Versión:** 0.1.0
+**Fecha:** 2026-07-14
+**Versión:** 0.4.0
 **Lead Architect:** Carlos Olivera
 
 ---
 
 ## 1. Resumen ejecutivo
 
-**Kernel version:** 0.3.0 (Geometry ABC → Point → BoundingBox)
+**Kernel version:** 0.4.0 (Geometry ABC → Point → BoundingBox → Vector)
 **Project version:** 0.1.0-dev
 
-Sprint 3.1 completado (Geometry Kernel). Sprint 3.2 en curso con TASK-0003A
-(Point) aprobada ✅ y TASK-0003B (BoundingBox) implementada ✅.
-
-El Geometry Engine está consolidando su base: tolerancias, validaciones,
-contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
+Geometry Kernel v0.4.0 certificado y Computational Geometry Engine v0.1
+operativo con 9 operadores (GEOM-OPS-001 a 009), 118 tests, 99% cobertura.
+RFC-0005 certificado. Preparado para Segment.
 
 ---
 
@@ -27,10 +25,48 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 | RFC-0002 | Point | ✅ Aprobado |
 | RFC-0003 | BoundingBox | ✅ Aprobado |
 | RFC-0004A | Álgebra Vectorial | ✅ Aprobado y congelado |
+| RFC-0005 | Computational Geometry Operators | ✅ CERTIFICADO Y CONGELADO |
 
 ---
 
-## 3. Módulos del Geometry Engine
+## 3. Architecture Layers
+
+```
+Computational Geometry Engine (v0.1)     ← NUEVO
+│
+├── Geometry Kernel (v0.4.0 CERTIFIED)
+│   ├── Geometry ABC     ✅
+│   ├── Point            ✅
+│   ├── BoundingBox      ✅
+│   └── Vector           ✅
+│
+├── Computational Geometry Operators (v0.1)
+│   ├── orientation      ✅ GEOM-OPS-001
+│   ├── is_collinear     ✅ GEOM-OPS-002
+│   ├── is_parallel      ✅ GEOM-OPS-003
+│   ├── is_perpendicular ✅ GEOM-OPS-004
+│   ├── distance         ✅ GEOM-OPS-005
+│   ├── project          ✅ GEOM-OPS-006
+│   ├── closest_point    ✅ GEOM-OPS-007
+│   ├── intersect        ✅ GEOM-OPS-008
+│   └── bbox_ops         ✅ GEOM-OPS-009
+│
+└── Future Entities
+    ├── Segment          ⏳
+    ├── Polyline         ⏳
+    └── Line             ⏳
+```
+
+## 4. Geometry Kernel — Estado por entidad
+
+```
+Geometry ABC      ✅  (97% cov)
+Point             ✅  (98% cov, 60 tests)
+BoundingBox       ✅  (100% cov, 87 tests)
+Vector            ✅  (100% cov, 133 tests, benchmark)
+Segment           ⏳  (pendiente — RFC-0005)
+Polyline          ⏳  (pendiente — RFC-0005 + Segment)
+```
 
 ### 3.1 Completados (testeados, lint, docs)
 
@@ -43,14 +79,14 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 | Exceptions | `exceptions/*.py` | 5 archivos | 100% | ✅ |
 | **Point** | `primitives/point.py` | 117 | 98% | ✅ **APROBADO** |
 | **BoundingBox** | `primitives/bbox.py` | 211 | 100% | ✅ **IMPLEMENTADO** |
+| **Vector** | `primitives/vector.py` | 173 | 100% | ✅ **CERTIFICADO** |
 
 ### 3.2 Prototipos (pendientes de reescribir)
 
-| Módulo | Archivo | Lines | Cobertura | Sprint |
+| Módulo | Archivo | Lines | Cobertura | Plan |
 |---|---|---|---|---|
-| Vector | `primitives/vector.py` | 63 | 0% | Sprint 3.3 |
-| Segment | `primitives/segment.py` | 73 | 0% | Sprint 3.3 |
-| Precision | `kernel/precision.py` | 17 | 0% | Sprint 3.3 |
+| Segment | `primitives/segment.py` | 73 | 0% | Post RFC-0005 |
+| Precision | `kernel/precision.py` | 17 | 0% | Revisar integración |
 
 ### 3.3 Tests
 
@@ -59,16 +95,19 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 | Kernel (Tolerance + Validators + Geometry) | 62 | ✅ Todos pasando |
 | Point (TASK-0003A) | 60 | ✅ Todos pasando |
 | BoundingBox (TASK-0003B) | 87 | ✅ Todos pasando |
-| **Total** | **209** | **✅ 0 fallos** |
+| Vector (TASK-0004B) | 133 | ✅ Todos pasando |
+| Operators (TASK-0005A) | 118 | ✅ Todos pasando |
+| **Total Geometry** | **460** | **✅ 0 fallos** |
+| **Total proyecto** | **552** | **✅ 0 fallos** |
 
 ---
 
-## 4. Cobertura global
+## 7. Cobertura global
 
 | Alcance | Cobertura | Notas |
 |---|---|---|
-| Geometry completo (sin prototipos) | 99% | Solos modules testeados |
-| Geometry completo (con prototipos) | 72% | Vector, Segment, Precision no tienen tests |
+| Geometry Kernel testado (ABC + Point + BBox + Vector) | **99.5%** | 4 clases, 589 líneas |
+| Geometry completo (con prototipos sin tests) | 89% | Segment, Precision pendientes |
 | **Objetivo** | **≥95%** | Solo se mide sobre código completado |
 
 ---
@@ -76,14 +115,13 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 ## 5. Deuda técnica
 
 | Ítem | Tipo | Impacto | Plan |
-|---|---|---|---|
-| `segment.py` (prototipo, 73 lines) | Código legacy sin tests | Bajo (no importado) | Reescritura RFC-0004 |
-| `vector.py` (prototipo, 63 lines) | Código legacy sin tests | Bajo (no importado) | Reescritura RFC-0005 |
+|---|---|---|---|---|
+| `segment.py` (prototipo, 73 lines) | Código legacy sin tests | Bajo (no importado) | Reescritura post RFC-0005 |
 | `precision.py` (prototipo, 17 lines) | Código legacy sin tests | Bajo (no usado) | Revisar si se integra o elimina |
 | `__str__` no testeado en `Geometry` | 1 línea no cubierta | Muy bajo | Esperar a próxima entidad |
 | Líneas 77-78 en `point.py` | 2 líneas inalcanzables | Muy bajo | Catch en `is_valid` |
 
-**Deuda técnica total:** Muy baja. No hay bloqueadores.
+**Deuda técnica total:** Muy baja. Vector certificado sin deuda. No hay bloqueadores.
 
 ---
 
@@ -96,43 +134,50 @@ contrato `Geometry(ABC)` y dos primitivas completas con cobertura ≥ 95%.
 | **No Point + Point** | La suma de dos posiciones no tiene significado geométrico | RFC-0004A |
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
-|---|---|---|---|
-| Vector sin implementar bloquea Segment/Line | Alta | Medio | Priorizar RFC-0004 tras BoundingBox |
+|---|---|---|---|---|
+| RFC-0005 sin abrir bloquea Segment/Polyline | Alta | Medio | Abrir RFC-0005 al certificar Vector |
 | `geometry.py` crece con cada nueva entidad | Media | Bajo | Refactorizar si supera 400 líneas |
 | Prototipos antiguos confunden al desarrollador | Baja | Bajo | Borrar o marcar como `@deprecated` |
 
 ---
 
-## 7. Próximos objetivos (Sprint 3.2)
+## 8. Próximos objetivos — Hito A (Motor Geométrico Completo)
+
+**🎯 Objetivo:** Polyline + PK Engine funcional, demo sobre línea real.
 
 1. ✅ **TASK-0003A** — Point (APROBADO)
 2. ✅ **TASK-0003B** — BoundingBox (APROBADO)
-3. 📝 **RFC-0004A** — Álgebra Vectorial (modelo matemático)
-4. 📝 **RFC-0004B** — Vector (implementación)
-5. 📝 **RFC-0005** — Segment
+3. ✅ **RFC-0004A** — Álgebra Vectorial (modelo matemático, congelado)
+4. ✅ **TASK-0004B** — Vector (CERTIFICADO, Kernel v0.4.0)
+5. ✅ **RFC-0005** — Computational Geometry Operators (CERTIFICADO)
+6. ✅ **TASK-0005A** — Operators Package (9 operadores, 118 tests)
+7. ⏳ **TASK-0005B** — Segment
+8. ⏳ **TASK-0006** — Polyline
+9. ⏳ **PK Engine** — `point_at_pk`, `pk_of_point`, `project`, `subline`
 
-> **Regla:** Ninguna entidad se implementa hasta que su modelo matemático
-> esté definido y aprobado (RFC-0004A antes que Vector).
+---
+
+> **Flujo:** Operators → Segment → Polyline → PK Engine → Primera demo real.
 
 ---
 
 ## 8. Jerarquía y documentos del Geometry Engine
 
 ```
-Geometry (ABC)
+Geometry (ABC)        ✅ Kernel v0.4.0
 │
-├── Point          ✅ Completado (98% cov)
-├── BoundingBox    ✅ Completado (100% cov)
-├── Vector         📝 Álgebra definida (RFC-0004A); impl. pendiente
-├── Segment        📅 Prototipo (0% cov, pendiente)
+├── Point             ✅ Certificado (98% cov, 60 tests)
+├── BoundingBox       ✅ Certificado (100% cov, 87 tests)
+├── Vector            ✅ Certificado (100% cov, 133 tests, benchmark)
+├── Segment           ⏳ Pendiente (RFC-0005 primero)
 │
-├── Curve (ABC)    📅 Futuro Sprint 3.3
+├── Curve (ABC)       📅 Futuro
 │   ├── Line
-│   ├── Polyline
+│   ├── Polyline      🎯 Siguiente hito
 │   ├── Arc
 │   └── Circle
 │
-└── Surface (ABC)  📅 Futuro
+└── Surface (ABC)     📅 Futuro
     └── Polygon
 ```
 
@@ -140,41 +185,47 @@ Documentos matemáticos permanentes:
 
 | Documento | Ubicación | Descripción |
 |---|---|---|
-| Álgebra Vectorial | `docs/Geometry/Algebra.md` | Especificación matemática del motor. 30 operaciones definidas |
+| Álgebra Vectorial | `docs/Geometry/Kernel/Algebra.md` | Especificación matemática del motor. 30 operaciones definidas |
 | RFC-0004A | `docs/RFC/RFC-0004A-Algebra-Vectorial.md` | ✅ Aprobado y congelado. 30 responsabilidades, 4 ADRs |
+| RFC-0005 | `docs/Geometry/RFC/RFC-0005-Computational-Geometry-Operators.md` | ✅ CERTIFICADO. 9 operadores, 5 ADRs |
 | ADR-0007 | `GEOMETRY_KERNEL_SPEC.md §19` | Strong Types — no primitivas cuando existe entidad de dominio |
 | ADR-0008 | `GEOMETRY_KERNEL_SPEC.md §19` | Inmutabilidad total del Kernel |
 | ADR-0009 | `GEOMETRY_KERNEL_SPEC.md §19` | Versionado independiente del Kernel |
 
-## 9. Reglas de álgebra de operadores
+## 9. Álgebra de operadores — Reglas vigentes
 
-Decisión arquitectónica clave (RFC-0004A):
+Decisión arquitectónica clave (RFC-0004A, congelada):
 
 | Operación | Resultado | Estado |
 |---|---|---|
-| Point - Point | Vector | ✅ Permitido |
-| Point + Vector | Point | ✅ Permitido |
-| Point - Vector | Point | ✅ Permitido |
-| Vector + Vector | Vector | ✅ Permitido |
-| Vector - Vector | Vector | ✅ Permitido |
-| Vector * escalar | Vector | ✅ Permitido |
-| escalar * Vector | Vector | ✅ Permitido |
-| Vector / escalar | Vector | ✅ Permitido |
-| -Vector | Vector | ✅ Permitido |
+| Point - Point | Vector | ✅ Implementado |
+| Point + Vector | Point | ✅ Implementado |
+| Point - Vector | Point | ✅ Implementado |
+| Vector + Vector | Vector | ✅ Implementado |
+| Vector - Vector | Vector | ✅ Implementado |
+| Vector * escalar | Vector | ✅ Implementado |
+| escalar * Vector | Vector | ✅ Implementado |
+| Vector / escalar | Vector | ✅ Implementado |
+| -Vector | Vector | ✅ Implementado |
 | Point + Point | ❌ Error | 🚫 Prohibido |
 | Point * escalar | ❌ Error | 🚫 Prohibido |
+
+> **Nuevo:** Vector + Point = Point (vía `__radd__`).
 
 ---
 
 ## 10. Líneas de código (LOC)
 
 | Módulo | Líneas | % del total |
-|---|---|---|
-| Kernel (constants, geometry, tolerance, validation) | 247 | 43% |
-| Primitivas (point, bbox) | 328 | 57% |
-| Prototipos (vector, segment, precision) | 153 | — (no cuentan) |
-| **Total Geometry Engine** | **575** | 100% |
+|---|---|---|---|
+| Kernel (constants, geometry, tolerance, validation) | 247 | 27% |
+| Point | 108 | 12% |
+| BoundingBox | 134 | 14% |
+| Vector | 173 | 19% |
+| Operators (9 módulos) | 175 | 19% |
+| Segment (prototipo) | 67 | — (no cuenta) |
+| **Total Geometry Engine** | **837** | 100% |
 
 ---
 
-*Documento generado el 2026-07-10. Próxima actualización: al cierre del Sprint 3.2.*
+*Documento generado el 2026-07-14. Próxima actualización: al certificar Segment (TASK-0005B).*

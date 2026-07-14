@@ -1,5 +1,20 @@
 ﻿# Changelog
 
+## [0.4.0-alpha.1] - 2026-07-14 — Geometry Kernel v0.4.0 CERTIFIED
+### Added
+- **Vector** (TASK-0004B) — certificado con 133 tests, 100% cobertura, benchmark
+- `benchmarks/vector_benchmark.py` — línea base con 7 benchmarks (creación, dot, norm, rotate, JSON, length)
+- `docs/Geometry/Kernel/` — documentación del Kernel reorganizada bajo `docs/Geometry/`
+- `docs/Geometry/Algorithms/`, `docs/Geometry/ADR/`, `docs/Geometry/Examples/`, `docs/Geometry/Benchmarks/`
+
+### Certified
+- Geometry Kernel v0.4.0: Geometry(ABC) ✅, Point ✅, BoundingBox ✅, Vector ✅
+- 342 tests Geometry, 434 tests total proyecto, 0 fallos
+
+### Changed
+- `docs/PROJECT_STATUS.md` — actualizado a Hito A, Kernel v0.4.0, tabla por entidad
+- `.gitignore` — añadidos `.coverage` y `.pytest_cache/`
+
 ## [0.1.0] - 2026-07-09 — Sprint 1: LINPRO Core
 ### Added
 - LINPRO Core completo con 11 módulos:
