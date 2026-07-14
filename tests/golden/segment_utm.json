@@ -1,0 +1,19 @@
+{
+  "entity": "GEOM-SEG-GOLDEN-001",
+  "description": "Segmento entre dos puntos UTM",
+  "version": "0.5.0",
+  "start": {"x": 500000.0, "y": 4600000.0, "z": 0.0},
+  "end": {"x": 600000.0, "y": 4700000.0, "z": 0.0},
+  "to_dict": {
+    "start": {"x": 500000.0, "y": 4600000.0, "z": 0.0},
+    "end": {"x": 600000.0, "y": 4700000.0, "z": 0.0}
+  },
+  "to_tuple": [500000.0, 4600000.0, 0.0, 600000.0, 4700000.0, 0.0],
+  "to_wkt": "LINESTRING (500000 4600000, 600000 4700000)",
+  "length": 141421.3562373095,
+  "length_squared": 20000000000.0,
+  "azimuth": 45.0,
+  "is_zero_length": false,
+  "repr": "Segment(Point(500000.0, 4600000.0, 0.0) → Point(600000.0, 4700000.0, 0.0))",
+  "dimension": 1
+}

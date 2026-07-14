@@ -52,7 +52,7 @@ Computational Geometry Engine (v0.1)     ← NUEVO
 │   └── bbox_ops         ✅ GEOM-OPS-009
 │
 └── Future Entities
-    ├── Segment          ⏳
+    ├── Segment          ✅
     ├── Polyline         ⏳
     └── Line             ⏳
 ```
@@ -64,8 +64,8 @@ Geometry ABC      ✅  (97% cov)
 Point             ✅  (98% cov, 60 tests)
 BoundingBox       ✅  (100% cov, 87 tests)
 Vector            ✅  (100% cov, 133 tests, benchmark)
-Segment           ⏳  (pendiente — RFC-0005)
-Polyline          ⏳  (pendiente — RFC-0005 + Segment)
+Segment           ✅  (100% cov, 142 tests, benchmark)  ← NUEVO
+Polyline          ⏳  (pendiente)
 ```
 
 ### 3.1 Completados (testeados, lint, docs)
@@ -85,7 +85,7 @@ Polyline          ⏳  (pendiente — RFC-0005 + Segment)
 
 | Módulo | Archivo | Lines | Cobertura | Plan |
 |---|---|---|---|---|
-| Segment | `primitives/segment.py` | 73 | 0% | Post RFC-0005 |
+| **Segment** | `primitives/segment.py` | 117 | 100% | ✅ **CERTIFICADO** |
 | Precision | `kernel/precision.py` | 17 | 0% | Revisar integración |
 
 ### 3.3 Tests
@@ -97,8 +97,9 @@ Polyline          ⏳  (pendiente — RFC-0005 + Segment)
 | BoundingBox (TASK-0003B) | 87 | ✅ Todos pasando |
 | Vector (TASK-0004B) | 133 | ✅ Todos pasando |
 | Operators (TASK-0005A) | 118 | ✅ Todos pasando |
-| **Total Geometry** | **460** | **✅ 0 fallos** |
-| **Total proyecto** | **552** | **✅ 0 fallos** |
+| Segment (TASK-0005B) | 142 | ✅ Todos pasando |
+| **Total Geometry** | **602** | **✅ 0 fallos** |
+| **Total proyecto** | **694** | **✅ 0 fallos** |
 
 ---
 
@@ -116,7 +117,7 @@ Polyline          ⏳  (pendiente — RFC-0005 + Segment)
 
 | Ítem | Tipo | Impacto | Plan |
 |---|---|---|---|---|
-| `segment.py` (prototipo, 73 lines) | Código legacy sin tests | Bajo (no importado) | Reescritura post RFC-0005 |
+| `precision.py` (prototipo) | Código legacy sin tests | Bajo | Revisar integración |
 | `precision.py` (prototipo, 17 lines) | Código legacy sin tests | Bajo (no usado) | Revisar si se integra o elimina |
 | `__str__` no testeado en `Geometry` | 1 línea no cubierta | Muy bajo | Esperar a próxima entidad |
 | Líneas 77-78 en `point.py` | 2 líneas inalcanzables | Muy bajo | Catch en `is_valid` |
@@ -151,7 +152,7 @@ Polyline          ⏳  (pendiente — RFC-0005 + Segment)
 4. ✅ **TASK-0004B** — Vector (CERTIFICADO, Kernel v0.4.0)
 5. ✅ **RFC-0005** — Computational Geometry Operators (CERTIFICADO)
 6. ✅ **TASK-0005A** — Operators Package (9 operadores, 118 tests)
-7. ⏳ **TASK-0005B** — Segment
+7. ✅ **TASK-0005B** — Segment (CERTIFICADO, 142 tests, 100% cov)
 8. ⏳ **TASK-0006** — Polyline
 9. ⏳ **PK Engine** — `point_at_pk`, `pk_of_point`, `project`, `subline`
 
@@ -169,7 +170,7 @@ Geometry (ABC)        ✅ Kernel v0.4.0
 ├── Point             ✅ Certificado (98% cov, 60 tests)
 ├── BoundingBox       ✅ Certificado (100% cov, 87 tests)
 ├── Vector            ✅ Certificado (100% cov, 133 tests, benchmark)
-├── Segment           ⏳ Pendiente (RFC-0005 primero)
+├── Segment           ✅ Certificado (100% cov, 142 tests, benchmark)
 │
 ├── Curve (ABC)       📅 Futuro
 │   ├── Line
@@ -223,8 +224,8 @@ Decisión arquitectónica clave (RFC-0004A, congelada):
 | BoundingBox | 134 | 14% |
 | Vector | 173 | 19% |
 | Operators (9 módulos) | 175 | 19% |
-| Segment (prototipo) | 67 | — (no cuenta) |
-| **Total Geometry Engine** | **837** | 100% |
+| Segment | 117 | 12% |
+| **Total Geometry Engine** | **954** | 100% |
 
 ---
 
