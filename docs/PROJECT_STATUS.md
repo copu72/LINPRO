@@ -17,6 +17,15 @@ azimuth_at_pk, normal_at_pk, segment_at_pk.
 222 tests Polyline/PK, 99% cobertura, benchmark.
 Documentación de PK como Value Object preparada para Station/PK/Measure.
 
+## Hito B: Spatial Analysis Framework 🚀
+
+RFC-0006 certificado con el Spatial Analysis Framework.
+Paquete `analysis/` con 213 líneas, 100% cobertura, 54 tests.
+Detector(ABC), AnalysisResult, Crossing, MunicipalityCrossing, Incident.
+MunicipalityDetector funcional con intersección segmento-a-segmento.
+GISLoader con soporte GeoJSON nativo (geometrías LINPRO, sin Shapely).
+SpatialIndex con R-tree fallback a fuerza bruta.
+
 ---
 
 ## 2. RFCs
