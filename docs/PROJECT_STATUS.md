@@ -1,19 +1,21 @@
 # PROJECT_STATUS.md — Cuadro de Mando
 
-**Fecha:** 2026-07-14
-**Versión:** 0.4.0
+**Fecha:** 2026-07-16
+**Versión:** 0.6.0
 **Lead Architect:** Carlos Olivera
 
 ---
 
 ## 1. Resumen ejecutivo
 
-**Kernel version:** 0.4.0 (Geometry ABC → Point → BoundingBox → Vector)
+**Kernel version:** 0.6.0 (Geometry ABC → Point → BoundingBox → Vector → Segment → Polyline)
 **Project version:** 0.1.0-dev
 
-Geometry Kernel v0.4.0 certificado y Computational Geometry Engine v0.1
-operativo con 9 operadores (GEOM-OPS-001 a 009), 118 tests, 99% cobertura.
-RFC-0005 certificado. Preparado para Segment.
+Geometry Kernel v0.6.0 certificado con Polyline como Engineering Axis.
+PK Engine integrado en Polyline: point_at_pk, pk_of, project, closest_point,
+azimuth_at_pk, normal_at_pk, segment_at_pk.
+222 tests Polyline/PK, 99% cobertura, benchmark.
+Documentación de PK como Value Object preparada para Station/PK/Measure.
 
 ---
 
@@ -32,13 +34,20 @@ RFC-0005 certificado. Preparado para Segment.
 ## 3. Architecture Layers
 
 ```
-Computational Geometry Engine (v0.1)     ← NUEVO
+Engineering Platform (v0.1)                          ← NUEVO
 │
-├── Geometry Kernel (v0.4.0 CERTIFIED)
+├── Engineering Axis (Polyline) (v0.6.0)              ← NUEVO
+│   ├── PK Engine: point_at_pk, pk_of, project       ✅
+│   ├── Azimuth, Normal, Segment at PK               ✅
+│   └── Topology, Mutation, Serialization            ✅
+│
+├── Geometry Kernel (v0.6.0 CERTIFIED)
 │   ├── Geometry ABC     ✅
 │   ├── Point            ✅
 │   ├── BoundingBox      ✅
-│   └── Vector           ✅
+│   ├── Vector           ✅
+│   ├── Segment          ✅
+│   └── Polyline         ✅
 │
 ├── Computational Geometry Operators (v0.1)
 │   ├── orientation      ✅ GEOM-OPS-001
@@ -51,10 +60,11 @@ Computational Geometry Engine (v0.1)     ← NUEVO
 │   ├── intersect        ✅ GEOM-OPS-008
 │   └── bbox_ops         ✅ GEOM-OPS-009
 │
-└── Future Entities
-    ├── Segment          ✅
-    ├── Polyline         ⏳
-    └── Line             ⏳
+└── Future Modules
+    ├── Municipality Detector    ⏳
+    ├── Road/River Crossing      ⏳
+    ├── Cadastre                 ⏳
+    └── GUI                      ⏳
 ```
 
 ## 4. Geometry Kernel — Estado por entidad
@@ -64,8 +74,8 @@ Geometry ABC      ✅  (97% cov)
 Point             ✅  (98% cov, 60 tests)
 BoundingBox       ✅  (100% cov, 87 tests)
 Vector            ✅  (100% cov, 133 tests, benchmark)
-Segment           ✅  (100% cov, 142 tests, benchmark)  ← NUEVO
-Polyline          ⏳  (pendiente)
+Segment           ✅  (100% cov, 142 tests, benchmark)
+Polyline          ✅  (99% cov, 222 tests, benchmark)  ← NUEVO — Engineering Axis
 ```
 
 ### 3.1 Completados (testeados, lint, docs)
@@ -80,12 +90,16 @@ Polyline          ⏳  (pendiente)
 | **Point** | `primitives/point.py` | 117 | 98% | ✅ **APROBADO** |
 | **BoundingBox** | `primitives/bbox.py` | 211 | 100% | ✅ **IMPLEMENTADO** |
 | **Vector** | `primitives/vector.py` | 173 | 100% | ✅ **CERTIFICADO** |
+| **Segment** | `primitives/segment.py` | 117 | 100% | ✅ **CERTIFICADO** |
+| **Polyline** | `primitives/polyline.py` | 275 | 99% | ✅ **CERTIFICADO (Engineering Axis)** |
+| **PK** | `primitives/pk.py` | 82 | 100% | ✅ **Value Object** |
 
 ### 3.2 Prototipos (pendientes de reescribir)
 
 | Módulo | Archivo | Lines | Cobertura | Plan |
 |---|---|---|---|---|
 | **Segment** | `primitives/segment.py` | 117 | 100% | ✅ **CERTIFICADO** |
+| **Polyline** | `primitives/polyline.py` | 275 | 99% | ✅ **CERTIFICADO (Engineering Axis)** |
 | Precision | `kernel/precision.py` | 17 | 0% | Revisar integración |
 
 ### 3.3 Tests
@@ -98,8 +112,9 @@ Polyline          ⏳  (pendiente)
 | Vector (TASK-0004B) | 133 | ✅ Todos pasando |
 | Operators (TASK-0005A) | 118 | ✅ Todos pasando |
 | Segment (TASK-0005B) | 142 | ✅ Todos pasando |
-| **Total Geometry** | **602** | **✅ 0 fallos** |
-| **Total proyecto** | **694** | **✅ 0 fallos** |
+| Polyline (TASK-0006) | 222 | ✅ Todos pasando |
+| **Total Geometry** | **824** | **✅ 0 fallos** |
+| **Total proyecto** | **916** | **✅ 0 fallos** |
 
 ---
 
@@ -107,8 +122,8 @@ Polyline          ⏳  (pendiente)
 
 | Alcance | Cobertura | Notas |
 |---|---|---|
-| Geometry Kernel testado (ABC + Point + BBox + Vector) | **99.5%** | 4 clases, 589 líneas |
-| Geometry completo (con prototipos sin tests) | 89% | Segment, Precision pendientes |
+| Geometry Kernel testado (ABC + Point + BBox + Vector + Segment + Polyline) | **99%** | 6 clases, 980+ líneas |
+| Geometry completo (con prototipos sin tests) | 89% | Precision pendiente |
 | **Objetivo** | **≥95%** | Solo se mide sobre código completado |
 
 ---
@@ -122,7 +137,7 @@ Polyline          ⏳  (pendiente)
 | `__str__` no testeado en `Geometry` | 1 línea no cubierta | Muy bajo | Esperar a próxima entidad |
 | Líneas 77-78 en `point.py` | 2 líneas inalcanzables | Muy bajo | Catch en `is_valid` |
 
-**Deuda técnica total:** Muy baja. Vector certificado sin deuda. No hay bloqueadores.
+**Deuda técnica total:** Muy baja. Polyline certificado sin deuda significativa (1 línea DXF legacy no cubierta). No hay bloqueadores.
 
 ---
 
@@ -144,7 +159,7 @@ Polyline          ⏳  (pendiente)
 
 ## 8. Próximos objetivos — Hito A (Motor Geométrico Completo)
 
-**🎯 Objetivo:** Polyline + PK Engine funcional, demo sobre línea real.
+**🎯 Objetivo:** Municipality Detector — primera demo funcional sobre línea real.
 
 1. ✅ **TASK-0003A** — Point (APROBADO)
 2. ✅ **TASK-0003B** — BoundingBox (APROBADO)
@@ -153,8 +168,12 @@ Polyline          ⏳  (pendiente)
 5. ✅ **RFC-0005** — Computational Geometry Operators (CERTIFICADO)
 6. ✅ **TASK-0005A** — Operators Package (9 operadores, 118 tests)
 7. ✅ **TASK-0005B** — Segment (CERTIFICADO, 142 tests, 100% cov)
-8. ⏳ **TASK-0006** — Polyline
-9. ⏳ **PK Engine** — `point_at_pk`, `pk_of_point`, `project`, `subline`
+8. ✅ **TASK-0006** — Polyline (CERTIFICADO, Engineering Axis, 222 tests, 99% cov)
+9. ⏳ **Hito B** — Municipality Detector (primera demo real con DXF)
+
+---
+
+> **Flujo:** Polyline ✅ → PK Engine ✅ → Municipality Detector ⏳ → Road/River Crossing ⏳
 
 ---
 
@@ -165,18 +184,20 @@ Polyline          ⏳  (pendiente)
 ## 8. Jerarquía y documentos del Geometry Engine
 
 ```
-Geometry (ABC)        ✅ Kernel v0.4.0
+Geometry (ABC)        ✅ Kernel v0.6.0
 │
 ├── Point             ✅ Certificado (98% cov, 60 tests)
 ├── BoundingBox       ✅ Certificado (100% cov, 87 tests)
 ├── Vector            ✅ Certificado (100% cov, 133 tests, benchmark)
 ├── Segment           ✅ Certificado (100% cov, 142 tests, benchmark)
+├── Polyline          ✅ Certificado (99% cov, 222 tests, benchmark)
+│   └── Engineering Axis + PK Engine
+│
+├── PK                ✅ Value Object (100% cov, 28 tests)
 │
 ├── Curve (ABC)       📅 Futuro
 │   ├── Line
-│   ├── Polyline      🎯 Siguiente hito
-│   ├── Arc
-│   └── Circle
+│   └── Arc
 │
 └── Surface (ABC)     📅 Futuro
     └── Polygon
@@ -222,11 +243,12 @@ Decisión arquitectónica clave (RFC-0004A, congelada):
 | Kernel (constants, geometry, tolerance, validation) | 247 | 27% |
 | Point | 108 | 12% |
 | BoundingBox | 134 | 14% |
-| Vector | 173 | 19% |
-| Operators (9 módulos) | 175 | 19% |
+| Vector | 173 | 18% |
+| Operators (9 módulos) | 175 | 18% |
 | Segment | 117 | 12% |
-| **Total Geometry Engine** | **954** | 100% |
+| Polyline | 275 | 28% |
+| **Total Geometry Engine** | **989** | 100% |
 
 ---
 
-*Documento generado el 2026-07-14. Próxima actualización: al certificar Segment (TASK-0005B).*
+*Documento generado el 2026-07-16. Próxima actualización: al completar Hito B (Municipality Detector).*
