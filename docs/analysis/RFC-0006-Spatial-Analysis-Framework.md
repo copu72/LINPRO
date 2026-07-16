@@ -272,25 +272,32 @@ class UnifiedAnalysisEngine:
 
 | ID | Título |
 |---|---|
+| ADR-007 | Los detectores específicos nunca implementan algoritmos espaciales; solo configuran origen de datos, filtros y modelo de salida |
 | ADR-010 | Detector como ABC — todos los detectores heredan del mismo contrato |
 | ADR-011 | AnalysisResult como objeto único — nunca diccionarios |
 | ADR-012 | Crossing como jerarquía inmutable |
 | ADR-013 | Incidencias como parte del resultado, no como excepciones |
 | ADR-014 | GISLoader como servicio separado del detector |
 | ADR-015 | SpatialIndex como optimización opcional |
+| ADR-016 | PolygonOverlayDetector como motor genérico de recubrimiento poligonal; Municipio, Provincia, Catastro, SIGPAC heredan de él |
+| ADR-017 | LinearCrossingDetector como motor genérico de cruce lineal; Carreteras, Ríos, Vías, Tuberías, Líneas heredan de él |
 
 ---
 
 ## 13. Roadmap del framework
 
 1. ✅ RFC-0006 — este documento.
-2. ⏳ `analysis/__init__.py`, `detectors/base.py`, `models/`.
-3. ⏳ `MunicipalityDetector` + `MunicipalityCrossing`.
-4. ⏳ `GISLoader` (shapefile + geojson + wfs).
-5. ⏳ `SpatialIndex` (con y sin rtree).
-6. ⏳ `RoadDetector`, `RiverDetector`, `CadastreDetector`.
-7. ⏳ `UnifiedAnalysisEngine`.
-8. ⏳ `ExcelExporter` (resultados a Excel).
+2. ✅ `analysis/__init__.py`, `detectors/base.py`, `models/`.
+3. ✅ `MunicipalityDetector` + `MunicipalityCrossing`.
+4. ✅ `GISLoader` (geojson).
+5. ✅ `SpatialIndex` (con y sin rtree).
+6. ✅ `PolygonOverlayDetector` — motor genérico de recubrimiento poligonal.
+7. ✅ `LinearCrossingDetector` — motor genérico de cruce lineal.
+8. ✅ `RoadDetector` + `RoadCrossing` — ejemplo concreto de cruce lineal.
+9. ⏳ `RoadDetector`, `RiverDetector`, `RailwayDetector`, `PipelineDetector`.
+10. ⏳ `ProvinceDetector`, `CadastreDetector`, `SIGPACDetector`.
+11. ⏳ `UnifiedAnalysisEngine`.
+12. ⏳ `ExcelExporter` (resultados a Excel).
 
 ---
 

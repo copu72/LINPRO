@@ -17,8 +17,12 @@ from linpro.analysis import (
     Detector,
     Incident,
     IncidentSeverity,
+    LinearCrossingDetector,
     MunicipalityCrossing,
     MunicipalityDetector,
+    PolygonOverlayDetector,
+    RoadCrossing,
+    RoadDetector,
 )
 from linpro.analysis.services.gis_loader import GISLoader
 from linpro.analysis.services.spatial_index import SpatialIndex
@@ -59,6 +63,26 @@ def horizontal_axis() -> Polyline:
 @pytest.fixture
 def vertical_axis() -> Polyline:
     return Polyline([Point(50, -10), Point(50, 110)])
+
+
+@pytest.fixture
+def crossing_road() -> Polyline:
+    """Diagonal road that crosses vertical_axis at (50, 50)."""
+    return Polyline([Point(0, 0), Point(100, 100)])
+
+
+@pytest.fixture
+def parallel_road() -> Polyline:
+    """Road far to the right, doesn't cross vertical_axis (x=50)."""
+    return Polyline([Point(200, 0), Point(200, 100)])
+
+
+@pytest.fixture
+def sample_roads(crossing_road, parallel_road) -> list[dict]:
+    return [
+        {"id": "A-4", "name": "Autovía del Sur", "type": "autovía", "polyline": crossing_road},
+        {"id": "M-40", "name": "Calle 30", "type": "autovía", "polyline": parallel_road},
+    ]
 
 
 @pytest.fixture
@@ -708,4 +732,365 @@ class TestEdgeCases:
         d = MunicipalityDetector(municipalities=[mun])
         axis = Polyline([Point(5, -10), Point(5, 20)])
         result = d.analyze(axis)
+        assert len(result.crossings) >= 1
+
+
+# ======================================================================
+#  HITO C — Generic Detectors
+# ======================================================================
+
+
+class TestPolygonOverlayDetector:
+    def test_abstract_cannot_instantiate(self):
+        with pytest.raises(TypeError):
+            PolygonOverlayDetector()
+
+    def test_is_detector(self):
+        assert issubclass(PolygonOverlayDetector, Detector)
+
+    def test_has_abstract_method(self):
+        assert PolygonOverlayDetector._create_crossing.__isabstractmethod__
+
+    def test_detector_name_default(self):
+        class Concrete(PolygonOverlayDetector):
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        d = Concrete()
+        assert d.detector_name == "Concrete"
+
+    def test_no_features(self, vertical_axis):
+        class Concrete(PolygonOverlayDetector):
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        d = Concrete()
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) == 0
+        assert len(result.incidents) == 1
+        assert result.incidents[0].code == "POD-001"
+
+    def test_load_features(self, sample_municipalities, vertical_axis):
+        class Concrete(PolygonOverlayDetector):
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        d = Concrete()
+        d.load_features(sample_municipalities)
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) >= 1
+        assert result.metadata.entity_count == 2
+
+    def test_missing_polygon(self, horizontal_axis):
+        class Concrete(PolygonOverlayDetector):
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        d = Concrete(features=[{"name": "NoPoly"}])
+        result = d.analyze(horizontal_axis)
+        warnings = [i for i in result.incidents if i.code == "POD-002"]
+        assert len(warnings) == 1
+
+    def test_bbox_filter(self, sample_municipalities):
+        class Concrete(PolygonOverlayDetector):
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        d = Concrete(features=sample_municipalities)
+        far = Polyline([Point(999, 999), Point(1000, 1000)])
+        result = d.analyze(far)
+        assert len(result.crossings) == 0
+
+    def test_bbox_overlap_no_crossing(self):
+        """Polygon bbox overlaps axis bbox but no segment intersection."""
+        class Concrete(PolygonOverlayDetector):
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        # Axis is a rectangular perimeter; polygon sits inside the gap
+        axis = Polyline([
+            Point(0, 0), Point(100, 0), Point(100, 300), Point(0, 300), Point(0, 0),
+        ])
+        polygon = Polyline([
+            Point(20, 100), Point(80, 100), Point(80, 200), Point(20, 200), Point(20, 100),
+        ])
+        d = Concrete(features=[{"name": "Inside", "polygon": polygon}])
+        result = d.analyze(axis)
+        infos = [i for i in result.incidents if i.code == "POD-003"]
+        assert len(infos) == 1
+        assert len(result.crossings) == 0
+
+    def test_error_handling(self):
+        class Concrete(PolygonOverlayDetector):
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        d = Concrete(features=[{"name": "Bad", "polygon": "not_a_polyline"}])
+        axis = Polyline([Point(0, 0), Point(10, 0)])
+        result = d.analyze(axis)
+        errors = [i for i in result.incidents if i.code == "POD-099"]
+        assert len(errors) >= 1
+
+    def test_incident_prefix_override(self):
+        class Custom(PolygonOverlayDetector):
+            INCIDENT_PREFIX = "CUS"
+            def _create_crossing(self, feature, pk_start, pk_end, point_start, point_end):
+                return Crossing(pk_start=pk_start, pk_end=pk_end,
+                                point_start=point_start, point_end=point_end)
+
+        d = Custom()
+        axis = Polyline([Point(0, 0), Point(10, 0)])
+        result = d.analyze(axis)
+        assert result.incidents[0].code == "CUS-001"
+
+
+class TestLinearCrossingDetector:
+    def test_abstract_cannot_instantiate(self):
+        with pytest.raises(TypeError):
+            LinearCrossingDetector()
+
+    def test_is_detector(self):
+        assert issubclass(LinearCrossingDetector, Detector)
+
+    def test_has_abstract_method(self):
+        assert LinearCrossingDetector._create_crossing.__isabstractmethod__
+
+    def test_no_features(self, vertical_axis):
+        class Concrete(LinearCrossingDetector):
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        d = Concrete()
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) == 0
+        assert len(result.incidents) == 1
+        assert result.incidents[0].code == "LCD-001"
+
+    def test_detector_name_default(self):
+        class Concrete(LinearCrossingDetector):
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        d = Concrete()
+        assert d.detector_name == "Concrete"
+
+    def test_load_features(self, sample_roads, vertical_axis):
+        class Concrete(LinearCrossingDetector):
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        d = Concrete()
+        d.load_features(sample_roads)
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) >= 1
+        assert result.metadata.entity_count == 2
+
+    def test_missing_polyline(self, vertical_axis):
+        class Concrete(LinearCrossingDetector):
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        d = Concrete(features=[{"name": "NoLine"}])
+        result = d.analyze(vertical_axis)
+        warnings = [i for i in result.incidents if i.code == "LCD-002"]
+        assert len(warnings) == 1
+
+    def test_bbox_filter(self, sample_roads):
+        class Concrete(LinearCrossingDetector):
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        d = Concrete(features=sample_roads)
+        far = Polyline([Point(999, 999), Point(1000, 1000)])
+        result = d.analyze(far)
+        assert len(result.crossings) == 0
+
+    def test_bbox_overlap_no_crossing(self):
+        """Feature bbox overlaps axis bbox but no segment intersection."""
+        class Concrete(LinearCrossingDetector):
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        # Axis is a rectangular perimeter; vertical road sits in the interior gap
+        axis = Polyline([
+            Point(0, 0), Point(100, 0), Point(100, 300), Point(0, 300), Point(0, 0),
+        ])
+        road = Polyline([Point(50, 100), Point(50, 200)])
+        d = Concrete(features=[{"name": "Inside", "polyline": road}])
+        result = d.analyze(axis)
+        infos = [i for i in result.incidents if i.code == "LCD-003"]
+        assert len(infos) == 1
+        assert len(result.crossings) == 0
+
+    def test_incident_prefix_override(self):
+        class Custom(LinearCrossingDetector):
+            INCIDENT_PREFIX = "CUS"
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        d = Custom()
+        axis = Polyline([Point(0, 0), Point(10, 0)])
+        result = d.analyze(axis)
+        assert result.incidents[0].code == "CUS-001"
+
+    def test_error_handling(self):
+        class Concrete(LinearCrossingDetector):
+            def _create_crossing(self, feature, pk, point):
+                return Crossing(pk_start=pk, pk_end=pk,
+                                point_start=point, point_end=point)
+
+        d = Concrete(features=[{"name": "Bad", "polyline": "not_a_polyline"}])
+        axis = Polyline([Point(0, 0), Point(10, 0)])
+        result = d.analyze(axis)
+        errors = [i for i in result.incidents if i.code == "LCD-099"]
+        assert len(errors) >= 1
+
+
+# ======================================================================
+#  DETECTOR — RoadDetector
+# ======================================================================
+
+
+class TestRoadDetector:
+    def test_no_roads(self, vertical_axis):
+        d = RoadDetector()
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) == 0
+        assert len(result.incidents) == 1
+        assert result.incidents[0].code == "ROD-001"
+
+    def test_is_detector(self):
+        assert issubclass(RoadDetector, Detector)
+
+    def test_is_linear_crossing_detector(self):
+        assert isinstance(RoadDetector(), LinearCrossingDetector)
+
+    def test_crosses_single_road(self, crossing_road, vertical_axis):
+        roads = [
+            {"id": "A-4", "name": "Autovía del Sur", "type": "autovía", "polyline": crossing_road},
+        ]
+        d = RoadDetector(roads=roads)
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) >= 1
+        c = result.crossings[0]
+        assert isinstance(c, RoadCrossing)
+        assert c.road_id == "A-4"
+        assert c.road_name == "Autovía del Sur"
+        assert c.road_type == "autovía"
+
+    def test_parallel_road_no_crossing(self, parallel_road, vertical_axis):
+        roads = [{"id": "M-40", "name": "Calle 30", "type": "autovía", "polyline": parallel_road}]
+        d = RoadDetector(roads=roads)
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) == 0
+
+    def test_load_roads(self, sample_roads, vertical_axis):
+        d = RoadDetector()
+        d.load_roads(sample_roads)
+        result = d.analyze(vertical_axis)
+        assert len(result.crossings) >= 1
+        assert result.metadata.entity_count == 2
+
+    def test_crossing_has_correct_fields(self, sample_roads, vertical_axis):
+        d = RoadDetector(roads=sample_roads)
+        result = d.analyze(vertical_axis)
+        for c in result.crossings:
+            assert isinstance(c, RoadCrossing)
+            assert isinstance(c.road_id, str)
+            assert isinstance(c.road_name, str)
+            assert isinstance(c.road_type, str)
+            assert isinstance(c.pk_start, PK)
+            assert isinstance(c.pk_end, PK)
+            assert isinstance(c.point_start, Point)
+            assert isinstance(c.point_end, Point)
+
+    def test_crossing_pk_equal(self, sample_roads, vertical_axis):
+        d = RoadDetector(roads=sample_roads)
+        result = d.analyze(vertical_axis)
+        for c in result.crossings:
+            assert c.pk_start == c.pk_end
+
+    def test_metadata(self, sample_roads, vertical_axis):
+        d = RoadDetector(roads=sample_roads)
+        result = d.analyze(vertical_axis)
+        assert result.metadata.detector_name == "RoadDetector"
+        assert result.metadata.entity_count == 2
+        assert result.metadata.duration_ms > 0
+
+
+# ======================================================================
+#  MODELOS — RoadCrossing
+# ======================================================================
+
+
+class TestRoadCrossingModel:
+    def test_create(self):
+        c = RoadCrossing(
+            pk_start=PK(100),
+            pk_end=PK(100),
+            point_start=Point(100, 0),
+            point_end=Point(100, 0),
+            road_id="A-4",
+            road_name="Autovía del Sur",
+            road_type="autovía",
+        )
+        assert c.road_id == "A-4"
+        assert c.road_name == "Autovía del Sur"
+        assert c.road_type == "autovía"
+        assert c.length == 0.0
+
+    def test_is_crossing(self):
+        c = RoadCrossing(
+            pk_start=PK(0), pk_end=PK(0),
+            point_start=Point(0, 0), point_end=Point(0, 0),
+            road_id="1", road_name="R1", road_type="nacional",
+        )
+        assert isinstance(c, Crossing)
+
+    def test_immutable(self):
+        c = RoadCrossing(
+            pk_start=PK(0), pk_end=PK(0),
+            point_start=Point(0, 0), point_end=Point(0, 0),
+            road_id="1", road_name="R1", road_type="nacional",
+        )
+        with pytest.raises(Exception):
+            c.road_id = "2"
+
+
+# ======================================================================
+#  HITO C — MunDetector sigue funcionando tras refactor
+# ======================================================================
+
+
+class TestRefactoredMunicipalityDetector:
+    def test_is_polygon_overlay_detector(self, sample_municipalities):
+        d = MunicipalityDetector(municipalities=sample_municipalities)
+        assert isinstance(d, PolygonOverlayDetector)
+
+    def test_municipality_detector_name(self, sample_municipalities, vertical_axis):
+        d = MunicipalityDetector(municipalities=sample_municipalities)
+        result = d.analyze(vertical_axis)
+        assert result.metadata.detector_name == "MunicipalityDetector"
+
+    def test_incident_prefix_unchanged(self):
+        assert MunicipalityDetector.INCIDENT_PREFIX == "MUN"
+
+    def test_load_municipalities_api(self, sample_municipalities, vertical_axis):
+        d = MunicipalityDetector()
+        d.load_municipalities(sample_municipalities)
+        result = d.analyze(vertical_axis)
         assert len(result.crossings) >= 1

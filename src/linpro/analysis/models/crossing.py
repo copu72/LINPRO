@@ -46,3 +46,18 @@ class MunicipalityCrossing(Crossing):
     municipality: str
     province: str
     code: str
+
+
+@dataclass(frozen=True)
+class RoadCrossing(Crossing):
+    """Cruce de una carretera con el Engineering Axis.
+
+    Attributes:
+        road_id: Identificador de la carretera.
+        road_name: Nombre de la carretera.
+        road_type: Tipo de carretera (autovía, nacional, ...).
+    """
+
+    road_id: str
+    road_name: str
+    road_type: str

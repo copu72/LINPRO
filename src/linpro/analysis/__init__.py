@@ -8,9 +8,12 @@ Todo análisis sigue el patrón:
 """
 
 from linpro.analysis.detectors.base import Detector
+from linpro.analysis.detectors.linear_crossing import LinearCrossingDetector
 from linpro.analysis.detectors.municipality import MunicipalityDetector
+from linpro.analysis.detectors.polygon_overlay import PolygonOverlayDetector
+from linpro.analysis.detectors.road import RoadDetector
 from linpro.analysis.models.analysis_result import AnalysisMetadata, AnalysisResult
-from linpro.analysis.models.crossing import Crossing, MunicipalityCrossing
+from linpro.analysis.models.crossing import Crossing, MunicipalityCrossing, RoadCrossing
 from linpro.analysis.models.incident import Incident, IncidentSeverity
 
 __all__ = [
@@ -20,6 +23,10 @@ __all__ = [
     "Detector",
     "Incident",
     "IncidentSeverity",
+    "LinearCrossingDetector",
     "MunicipalityCrossing",
     "MunicipalityDetector",
+    "PolygonOverlayDetector",
+    "RoadCrossing",
+    "RoadDetector",
 ]
